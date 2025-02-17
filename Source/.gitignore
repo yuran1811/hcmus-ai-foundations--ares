@@ -1,0 +1,17 @@
+# python generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+# venv
+.venv
+
+# rye generated files
+.ruff_cache/
+.pytest_cache/
+
+# others
+data/output
