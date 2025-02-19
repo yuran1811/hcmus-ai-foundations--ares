@@ -10,3 +10,10 @@
 #   universal: false
 
 -e file:.
+numpy==2.2.3
+    # via ares
+    # via scipy
+pygame==2.6.1
+    # via ares
+scipy==1.15.2
+    # via ares

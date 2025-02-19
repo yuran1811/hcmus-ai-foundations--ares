@@ -14,8 +14,15 @@ colorama==0.4.6
     # via pytest
 iniconfig==2.0.0
     # via pytest
+numpy==2.2.3
+    # via ares
+    # via scipy
 packaging==24.2
     # via pytest
 pluggy==1.5.0
     # via pytest
+pygame==2.6.1
+    # via ares
 pytest==8.3.4
+scipy==1.15.2
+    # via ares
