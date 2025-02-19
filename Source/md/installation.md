@@ -29,3 +29,9 @@ rye run dev
 ```bash
 rye test
 ```
+
+**Auto-generated `requirements.txt`**
+
+```bash
+rye list > requirements.txt
+```
