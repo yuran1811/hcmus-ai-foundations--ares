@@ -1,0 +1,10 @@
+- [ ] use hashing for visited state
+- [ ] export `requirements.txt`
+- GUI
+  - [ ] select map
+  - [ ] select algo
+  - [ ] toolbar: play, pause, speed up/down,
+- Benchmark using chart and graphs (with/without opt like deadlock, hungarian)
+  - [ ] Mem
+  - [ ] Time
+  - [ ] State
