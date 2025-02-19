@@ -24,6 +24,7 @@ def load_spritesheet(
         direction_map: List of direction names for each row (top to bottom)
         mirrored_pairs: List of tuples specifying mirrored directions (e.g., ('left', 'right'))
     """
+
     sheet = pg.image.load(file_path).convert_alpha()
     animations: dict[str, list[pg.Surface]] = {}
 
@@ -94,6 +95,7 @@ def load_tile_sprites(path: str, tile_width=16, tile_height=16):
     Load a tile-based (tile-based) sprite sheet and split into sub-tiles.
     Returns a dictionary of tile surfaces keyed by an index.
     """
+
     # 🖼️ Load the full sprite sheet
     sheet = pg.image.load(path).convert_alpha()
 
