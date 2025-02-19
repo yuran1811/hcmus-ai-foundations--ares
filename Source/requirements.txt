@@ -1,0 +1,9 @@
+-e file:///C:/Users/trieu/Desktop/gh/hcmus-ai-foundations/Source
+colorama==0.4.6
+iniconfig==2.0.0
+numpy==2.2.3
+packaging==24.2
+pluggy==1.5.0
+pygame==2.6.1
+pytest==8.3.4
+scipy==1.15.2
