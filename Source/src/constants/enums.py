@@ -43,10 +43,10 @@ class Algorithm(Enum):
 
 
 class Direction(Enum):
-    UP = 0, "UP", "u"
-    DOWN = 1, "DOWN", "d"
-    LEFT = 2, "LEFT", "l"
-    RIGHT = 3, "RIGHT", "r"
+    UP = 0, "UP", "u", (0, -1)
+    DOWN = 1, "DOWN", "d", (0, 1)
+    LEFT = 2, "LEFT", "l", (-1, 0)
+    RIGHT = 3, "RIGHT", "r", (1, 0)
 
     @classmethod
     def get_label(cls, direction):
@@ -59,3 +59,7 @@ class Direction(Enum):
     @classmethod
     def get_pushing(cls, direction):
         return cls(direction).value[2].upper()
+
+    @classmethod
+    def get_vec(cls, direction):
+        return cls(direction).value[3]

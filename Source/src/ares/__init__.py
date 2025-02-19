@@ -1,9 +1,7 @@
-from utils.generate import generate_output_content
+from core.game import Game
 
 
 def main() -> int:
-    print("Hello from ares!")
-    print(
-        generate_output_content("BFS", 16, 695, 4321, 58.12, 12.56, "uLulDrrRRRRRRurD")
-    )
+    Game().run()
+
     return 0
