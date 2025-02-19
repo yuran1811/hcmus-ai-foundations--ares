@@ -24,6 +24,7 @@ def load_spritesheet(
         direction_map: List of direction names for each row (top to bottom)
         mirrored_pairs: List of tuples specifying mirrored directions (e.g., ('left', 'right'))
     """
+
     sheet = pg.image.load(file_path).convert_alpha()
     animations: dict[str, list[pg.Surface]] = {}
 
@@ -89,11 +90,12 @@ def load_character_animations():
     }
 
 
-def load_tile_sprites(path, tile_width=16, tile_height=16):
+def load_tile_sprites(path: str, tile_width=16, tile_height=16):
     """
     Load a tile-based (tile-based) sprite sheet and split into sub-tiles.
     Returns a dictionary of tile surfaces keyed by an index.
     """
+
     # 🖼️ Load the full sprite sheet
     sheet = pg.image.load(path).convert_alpha()
 
@@ -126,7 +128,9 @@ def load_tile_sprites(path, tile_width=16, tile_height=16):
     return tile_dict
 
 
-def draw_tile_map(screen, tile_dict, tile_map, tile_width=16, tile_height=16):
+def draw_tile_map(
+    screen: pg.Surface, tile_dict, tile_map, tile_width=16, tile_height=16
+):
     """
     Given a 2D array (tile_map) of tile IDs, draw them on screen.
     """
