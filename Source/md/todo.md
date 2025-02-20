@@ -1,0 +1,21 @@
+- [x] export `requirements.txt`
+- algo opt
+  - [ ] use hashing for visited state (called `tranposition table`)
+  - [ ] deadlock detection (simple/count area/freeze/...)
+  - [ ] assignment problem using hungarian matching
+  - [ ] restart searching to prevent stucking
+- gui
+  - [ ] select map
+  - [ ] select algo
+  - [ ] toolbar: play, pause, speed up/down, rewind
+  - [ ] grid items visualization
+  - [ ] display step count, weigh pushed
+- report
+  - [ ] each algo report (detailed explanation including imple process, heuristic functin, etc.) with imgs and diagrams
+  - [ ] task assignment info
+  - [ ] self-evaluation of the project requirements
+  - [ ] test case description and experiment results (mem usage, time complexity, etc.) (use tables)
+    - benchmark using chart and graphs (with/without opt like deadlock, hungarian)
+      - [ ] mem
+      - [ ] time
+      - [ ] state
