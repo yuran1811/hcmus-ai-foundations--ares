@@ -20,7 +20,7 @@ LOG_DIR = os.path.join(PUBLIC_DIR, "logs")
 # layer 3
 CHARACTERS_PATH = os.path.join(IMAGES_PATH, "characters")
 ITEMS_PATH = os.path.join(IMAGES_PATH, "items")
-TILES_PATH = os.path.join(IMAGES_PATH, "tiles")
+TILESETS_PATH = os.path.join(IMAGES_PATH, "tilesets")
 UI_PATH = os.path.join(IMAGES_PATH, "ui")
 
 BGMS_PATH = os.path.join(SOUNDS_PATH, "bgms")

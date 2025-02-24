@@ -1,4 +1,3 @@
--e file:///C:/Users/trieu/Desktop/gh/hcmus-ai-foundations/Source
 colorama==0.4.6
 iniconfig==2.0.0
 numpy==2.2.3

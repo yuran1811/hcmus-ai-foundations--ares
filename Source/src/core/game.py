@@ -1,10 +1,14 @@
+from __future__ import annotations
+
 import pygame as pg
 
-from config import FPS, GAME_TITLE, SCREEN_HEIGHT, SCREEN_WIDTH
-from core.audio import Audio
+from config import FPS, GAME_TITLE
 from gui.components import Cursor
 from states.menu_state import MenuState
 from states.state import State
+from utils import get_screen_sz
+
+from .audio import Audio
 
 
 class Game:
@@ -13,21 +17,22 @@ class Game:
         pg.display.set_caption(GAME_TITLE)
         pg.mouse.set_visible(False)
 
-        self.running = True
-        self.clock = pg.time.Clock()
-        self.screen = pg.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT), pg.RESIZABLE)
+        screen_size = get_screen_sz()
+        self.screen = pg.display.set_mode(screen_size)
 
+        self.clock = pg.time.Clock()
         self.audio = Audio()
         self.cursor = Cursor(scale_factor=4)
 
+        self.dt = 0.0
+        self.running = True
         self.state: State = MenuState(self)
+        self.state_hist: set[State] = {self.state}
         self.state.enter()
 
     def run(self):
         while self.running:
-            dt = self.clock.tick(FPS) / 1000
-
-            self.cursor.update(dt)
+            self.dt = max(0.005, self.clock.tick(FPS) / 1000)
 
             # State transition
             next_state = self.state.next()
@@ -36,21 +41,27 @@ class Game:
                     self.state.exit()
 
                 self.state = next_state
+                self.state_hist.add(next_state)
                 self.state.enter()
 
             # Handle events
             for event in pg.event.get():
                 if event.type == pg.QUIT:
                     self.running = False
-                elif event.type == pg.VIDEORESIZE:
-                    self.screen = pg.display.set_mode((event.w, event.h), pg.RESIZABLE)
+
+                if (
+                    event.type == pg.VIDEORESIZE
+                    or event.type == pg.WINDOWRESIZED
+                    or event.type == pg.WINDOWSIZECHANGED
+                ):
+                    [_.responsive_handle(get_screen_sz()) for _ in self.state_hist]
 
                 self.state.handle_event(event)
 
             # Update and draw
-            self.state.update(dt)
-            self.state.draw(self.screen)
-            self.cursor.draw(self.screen)
+            for _ in [self.state, self.cursor]:
+                _.update(self.dt)
+                _.draw(self.screen)
 
             pg.display.flip()
 

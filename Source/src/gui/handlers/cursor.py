@@ -21,6 +21,3 @@ def cursor_handler(game, *, buttons: list[Button]):
             game.cursor.set_state("hover")
         else:
             game.cursor.set_state("normal")
-
-        for button in buttons:
-            button.update()
