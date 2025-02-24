@@ -5,11 +5,18 @@
   - [ ] assignment problem using hungarian matching
   - [ ] restart searching to prevent stucking
 - gui
-  - [ ] select map
-  - [ ] select algo
-  - [ ] toolbar: play, pause, speed up/down, rewind
-  - [ ] grid items visualization
-  - [ ] display step count, weigh pushed
+  - [x] gameplay design
+  - [x] visualize grid item
+  - [x] game interaction
+  - [x] toolbar (play, pause, reset, speed up/down, undo/redo move)
+  - [x] select algo
+  - [x] select map
+  - [x] settings (mute/unmute bgm, window resolution)
+  - [x] display fps, step count, weight pushed, elapsed time
+  - [x] movement history
+  - [x] simulate movement
+  - [ ] undo/redo movement handle
+  - [ ] import new map (auto-generate output file for gui to work with)
 - report
   - [ ] each algo report (detailed explanation including imple process, heuristic functin, etc.) with imgs and diagrams
   - [ ] task assignment info

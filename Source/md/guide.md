@@ -4,7 +4,7 @@
 
 - This project using [rye](https://rye.astral.sh/) as package manager.
 
-## Development
+# Development
 
 **Create the project**
 
@@ -18,10 +18,26 @@ rye init ares --license MIT --private --script
 rye sync
 ```
 
+or
+
+```bash
+pip install -r requirements.txt
+```
+
 **Running the Project**
 
 ```bash
-rye run dev
+rye run ares
+```
+
+or
+
+```bash
+rye run ares [OPTIONS]
+
+Options:
+	-v,	--version	Print the version
+		--gui		Using GUI
 ```
 
 **Testing**
@@ -30,7 +46,19 @@ rye run dev
 rye test
 ```
 
-**Auto-generated `requirements.txt`**
+**Linting**
+
+```bash
+rye lint
+```
+
+**Formatting**
+
+```bash
+rye fmt
+```
+
+**Generate `requirements.txt`**
 
 ```bash
 rye list > requirements.txt
