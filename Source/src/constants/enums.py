@@ -3,7 +3,7 @@ from enum import Enum
 
 class GridItem(Enum):
     WALL = 0, "#"
-    EMPTY = 1, " "
+    FLOOR = 1, " "
     STONE = 2, "$"
     ARES = 3, "@"
     SWITCH = 4, "."
@@ -15,7 +15,7 @@ class GridItem(Enum):
         return cls(item).value[1]
 
     @classmethod
-    def convert_char(cls, char):
+    def convert_char(cls, char: str):
         for item in cls:
             if item.value[1] == char:
                 return item.value[0]
@@ -34,8 +34,20 @@ class Algorithm(Enum):
     ANT_COLONY = 8, "Ant Colony", "Ant Colony Optimization"
 
     @classmethod
+    def from_label(cls, label):
+        for algo in Algorithm:
+            if algo.value[1] == label:
+                return algo
+
+        return Algorithm.BFS
+
+    @classmethod
     def get_label(cls, algo):
         return cls(algo).value[1]
+
+    @classmethod
+    def get_labels(cls):
+        return [cls(algo).value[1] for algo in cls]
 
     @classmethod
     def get_desc(cls, algo):
@@ -47,6 +59,12 @@ class Direction(Enum):
     DOWN = 1, "DOWN", "d", (0, 1)
     LEFT = 2, "LEFT", "l", (-1, 0)
     RIGHT = 3, "RIGHT", "r", (1, 0)
+
+    @classmethod
+    def from_char(cls, char):
+        for direction in Direction:
+            if direction.value[2] == char:
+                return direction
 
     @classmethod
     def get_label(cls, direction):
@@ -63,3 +81,13 @@ class Direction(Enum):
     @classmethod
     def get_vec(cls, direction):
         return cls(direction).value[3]
+
+
+class Orientation(Enum):
+    HORIZONTAL = 0
+    VERTICAL = 1
+
+
+class GameStateType(Enum):
+    PLAYING = 0
+    VICTORY = 1

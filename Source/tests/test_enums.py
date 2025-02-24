@@ -1,9 +1,9 @@
-from constants import Direction, GridItem
+from constants.enums import Direction, GridItem
 
 
 def test_get_char():
     assert GridItem.get_char(GridItem.WALL) == "#"
-    assert GridItem.get_char(GridItem.EMPTY) == " "
+    assert GridItem.get_char(GridItem.FLOOR) == " "
     assert GridItem.get_char(GridItem.STONE) == "$"
     assert GridItem.get_char(GridItem.ARES) == "@"
     assert GridItem.get_char(GridItem.SWITCH) == "."
