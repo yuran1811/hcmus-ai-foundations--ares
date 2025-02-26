@@ -76,6 +76,7 @@ class Player(pg.sprite.Sprite):
             return
 
         dir_vec = Direction.get_vec(direction)
+        dir_vec = pg.Vector2(dir_vec[1], dir_vec[0])
         new_grid_pos = self.grid_pos.copy() + dir_vec
         target_tile = self.map.get_tile_at(
             new_grid_pos.x * GRID_SIZE + GRID_SIZE // 2,
