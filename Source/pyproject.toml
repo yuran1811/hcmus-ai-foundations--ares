@@ -1,21 +1,22 @@
 [project]
 name = "ares"
 version = "0.1.0"
-description = "HCMUS AI Foundations Sokoban Project"
+description = "HCMUS AI Foundations -- Sokoban Project"
 authors = [
     { name = "yuran1811", email = "trieuvanbd123@gmail.com" },
     { name = "KhoaNguyen-HCMUS", email = "anhkhoa515.dev@gmail.com" },
     { name = "callmezuy", email = "bmduy23@clc.fitus.edu.vn" },
 ]
-dependencies = ["numpy>=2.2.3", "scipy>=1.15.2", "pygame>=2.6.1"]
 readme = "README.md"
 requires-python = ">= 3.8"
 license = { text = "MIT" }
 classifiers = ["Private :: Do Not Upload"]
+dependencies = ["numpy>=2.2.3", "scipy>=1.15.2", "pygame>=2.6.1"]
 
 [project.scripts]
 "ares" = "ares:main"
 "dev" = "ares:dev"
+"solve" = "ares:solve"
 
 
 [build-system]
