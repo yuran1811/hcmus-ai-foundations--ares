@@ -2,14 +2,7 @@
 GAME_TITLE = "Ares's Adventure"
 FPS = 120
 
-SCREEN_RES = [
-    (768, 456),
-    (800, 600),
-    (1024, 768),
-    (1280, 720),
-    (1920, 1080),
-]
-SCREEN_SIZE = SCREEN_RES[0]
+SCREEN_SIZE = (768, 456)
 
 GRID_SIZE = 40
 MOVEMENT_SPEED = 275

@@ -2,8 +2,7 @@ import pygame as pg
 
 from config import BG_COLOR, GAME_TITLE
 from constants.paths import BGMS_PATH
-from gui.components import Button
-from gui.components.text import Text
+from gui.components import Button, Text
 from gui.handlers.cursor import cursor_handler
 from utils import get_screen_sz
 
@@ -56,11 +55,24 @@ class MenuState(State):
 
         self.boot()
 
+    def responsive_handle(self):
+        super().responsive_handle()
+
+        screen_size = get_screen_sz()
+
+        self.title.set_position(self.title.pos[0], screen_size[1] // 2 - 120)
+
+        button_y = screen_size[1] // 2
+        for _ in self.buttons:
+            _.set_position(screen_size[0] // 2 - 100, button_y)
+            button_y += 60
+
     def boot(self):
         self.game.audio.load_sound("intro", f"{BGMS_PATH}/cave_theme_2.wav")
 
     def enter(self):
-        self.game.audio.play("intro", -1)
+        if self.game.audio.is_playing("intro"):
+            self.game.audio.play("intro", -1)
 
     def exit(self):
         pass
@@ -73,14 +85,6 @@ class MenuState(State):
         self.title.draw(screen)
 
         [_.draw(screen) for _ in self.buttons]
-
-    def responsive_handle(self, screen_size: tuple[int, int]):
-        self.title.set_position(self.title.pos[0], screen_size[1] // 2 - 120)
-
-        button_y = screen_size[1] // 2
-        for _ in self.buttons:
-            _.set_position(screen_size[0] // 2 - 100, button_y)
-            button_y += 60
 
     def handle_event(self, event: pg.event.Event):
         super().handle_event(event)
