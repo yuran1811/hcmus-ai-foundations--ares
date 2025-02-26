@@ -27,6 +27,18 @@ pip install -r requirements.txt
 **Running the Project**
 
 ```bash
+rye run solve
+```
+
+or
+
+```bash
+rye run dev
+```
+
+or
+
+```bash
 rye run ares
 ```
 
