@@ -1,6 +1,6 @@
 import pygame as pg
 
-from utils.config import get_screen_sz
+from utils import get_screen_sz
 
 from .decorators import WithFont
 

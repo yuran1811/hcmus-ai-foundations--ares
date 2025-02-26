@@ -36,6 +36,9 @@ class State(ABC):
             self.next_state = _prev_state
             self.next_state.next_state = None
 
+    def responsive_handle(self):
+        pass
+
     @abstractmethod
     def boot(self):
         pass
@@ -54,10 +57,6 @@ class State(ABC):
 
     @abstractmethod
     def draw(self, screen: pg.Surface):
-        pass
-
-    @abstractmethod
-    def responsive_handle(self, screen_size: tuple[int, int]):
         pass
 
     @abstractmethod

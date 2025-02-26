@@ -1,12 +1,10 @@
-from __future__ import annotations
-
 import pygame as pg
 
 from config import FPS, GAME_TITLE
 from gui.components import Cursor
 from states.menu_state import MenuState
 from states.state import State
-from utils import get_screen_sz
+from utils import get_screen_sz, update_screen_sz
 
 from .audio import Audio
 
@@ -18,7 +16,7 @@ class Game:
         pg.mouse.set_visible(False)
 
         screen_size = get_screen_sz()
-        self.screen = pg.display.set_mode(screen_size)
+        self.screen = pg.display.set_mode(screen_size, pg.RESIZABLE)
 
         self.clock = pg.time.Clock()
         self.audio = Audio()
@@ -49,12 +47,16 @@ class Game:
                 if event.type == pg.QUIT:
                     self.running = False
 
+                if event.type == pg.VIDEORESIZE:
+                    update_screen_sz(event.size)
+
                 if (
                     event.type == pg.VIDEORESIZE
                     or event.type == pg.WINDOWRESIZED
                     or event.type == pg.WINDOWSIZECHANGED
                 ):
-                    [_.responsive_handle(get_screen_sz()) for _ in self.state_hist]
+                    pg.display.set_mode(get_screen_sz(), pg.RESIZABLE)
+                    [_.responsive_handle() for _ in self.state_hist]
 
                 self.state.handle_event(event)
 
