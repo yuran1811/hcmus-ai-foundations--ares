@@ -70,7 +70,7 @@ def normalize_output_data(raw_data: list[str]):
             weight=int(weight.split(": ")[1]),
             node=int(node.split(": ")[1]),
             time=float(time.split(": ")[1]),
-            memory=float(memory.split(": ")[1]),
+            memory=float(memory.split(": ")[1].split(" ")[0]),
             path=path,
         )
 

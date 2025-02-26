@@ -4,7 +4,7 @@ def generate_output_content(
     tot_weight: int,
     num_nodes: int,
     search_time: float,
-    mem_used: float,
+    mem_used: str,
     action_seq: str,
 ):
-    return f"{algo}\nSteps: {num_steps}, Weight: {tot_weight}, Node: {num_nodes}, Time (ms): {search_time}, Memory (MB): {mem_used}\n{action_seq}"
+    return f"{algo}\nSteps: {num_steps}, Weight: {tot_weight}, Node: {num_nodes}, Time (ms): {search_time}, Memory: {mem_used}\n{action_seq}"

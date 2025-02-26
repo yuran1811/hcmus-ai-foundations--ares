@@ -6,9 +6,10 @@ from .asset_loader import (
     load_character_animations,
     load_spritesheet,
 )
-from .base import split_into_chunks
+from .base import byte_convert, get_timestamp, manhattan, memoize, split_into_chunks
 from .config import (
     get_project_toml_data,
+    get_screen_modes,
     get_screen_sz,
     get_speed,
     get_speed_cycle,
@@ -23,6 +24,8 @@ from .data import (
     normalize_output_data,
 )
 from .generate import generate_output_content
+from .log import console_log, local_log, raw_log
+from .metrics import profile
 
 __all__ = [
     "parse_args",
@@ -35,9 +38,14 @@ __all__ = [
     "load_character_animations",
     "load_spritesheet",
     #
+    "byte_convert",
+    "get_timestamp",
+    "manhattan",
+    "memoize",
     "split_into_chunks",
     #
     "get_project_toml_data",
+    "get_screen_modes",
     "get_speed",
     "get_speed_cycle",
     "get_screen_sz",
@@ -51,4 +59,10 @@ __all__ = [
     "normalize_output_data",
     #
     "generate_output_content",
+    #
+    "console_log",
+    "local_log",
+    "raw_log",
+    #
+    "profile",
 ]

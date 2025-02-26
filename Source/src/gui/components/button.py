@@ -48,8 +48,7 @@ class Button(WithFont):
         screen.blit(text_surf, text_rect)
 
     def handle_event(self, event: pg.event.Event):
-        mouse_pos = pg.mouse.get_pos()
-        self.hovered = self.rect.collidepoint(mouse_pos)
+        self.update()
 
         if event.type == pg.MOUSEBUTTONDOWN and event.button == 1 and self.hovered:
             self.clicked = True
