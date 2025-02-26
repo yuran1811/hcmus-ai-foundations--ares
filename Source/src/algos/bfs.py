@@ -1,25 +1,52 @@
-def bfs(matrix, start, end):
-    frontier = [start]
-    visited = {start: None}
-    path = []
+from __future__ import annotations
 
-    #print(f"frontier: {frontier}")
+from queue import Queue
 
-    while frontier:
-        current = frontier.pop(0)
-        if current == end:
-            visited, path = construct_path(visited, end)
-            return visited, path
+from constants.enums import Direction
+from utils.metrics import profile
 
-        for neighbor in range(len(matrix[current])):
-            if matrix[current][neighbor] and neighbor == end:
-                visited[neighbor] = current
-                visited, path = construct_path(visited, end)
-                return visited, path  
-            if matrix[current][neighbor] and neighbor not in visited:
-                visited[neighbor] = current
-                frontier.append(neighbor)
-        #print(f"frontier: {frontier}")
+from .search import Point, ProblemState, Search, StonesPos
 
-    print(f"visited: {visited}")
-    return visited, path
+
+class BFS(Search):
+    def __init__(
+        self,
+        num_row: int,
+        num_col: int,
+        matrix: list[list[str]],
+        player_pos: Point,
+        stones_pos: StonesPos,
+        switches_pos: frozenset[Point],
+        use_deadlock: bool = True,
+    ):
+        super().__init__(
+            num_row, num_col, matrix, player_pos, stones_pos, switches_pos, use_deadlock
+        )
+
+    @profile
+    def search(self):
+        frontier: Queue[ProblemState] = Queue()  # the FIFO queue
+        frontier.put(self.initial_state)
+
+        closed: set[ProblemState] = set()
+        closed.add(self.initial_state)
+
+        expanded_count = 0
+        while not frontier.empty():
+            expanded_count += 1
+
+            current_state = frontier.get()  # get the head node of the queue
+
+            for dir in Direction:
+                if self.can_go(current_state, dir):
+                    new_state = self.go(current_state, dir)
+
+                    if new_state.is_final(self.switches_pos):
+                        path, w = self.construct_path(new_state)
+                        return path, w, expanded_count, len(closed)
+
+                    if new_state not in closed:
+                        closed.add(new_state)
+                        frontier.put(new_state)
+
+        return "Impossible", 0, expanded_count, len(closed)

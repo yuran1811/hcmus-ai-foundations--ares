@@ -123,7 +123,7 @@ def get_frame_from_sprite(
     )
 
 
-def get_asset_path(*args):
+def get_asset_path(*args: str):
     return os.path.join(ASSETS_PATH, *args)
 
 
