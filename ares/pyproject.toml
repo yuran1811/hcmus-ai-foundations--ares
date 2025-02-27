@@ -1,0 +1,29 @@
+[project]
+name = "ares"
+version = "0.1.0"
+description = "Add your description here"
+authors = [
+    { name = "KhoaNguyen", email = "anhkhoa515.dev@gmail.com" }
+]
+dependencies = []
+readme = "README.md"
+requires-python = ">= 3.8"
+license = { text = "MIT" }
+classifiers = ["Private :: Do Not Upload"]
+
+[project.scripts]
+"ares" = "ares:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.rye]
+managed = true
+dev-dependencies = []
+
+[tool.hatch.metadata]
+allow-direct-references = true
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/ares"]
