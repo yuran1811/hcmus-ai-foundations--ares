@@ -24,6 +24,12 @@ def byte_convert(num: float) -> str:
     return f"{num:.2f} PB"
 
 
+def time_convert(time: float) -> str:
+    if time < 1:
+        return f"{time * 1000:.2f} ms"
+    return f"{time:.2f} s"
+
+
 def memoize(fn: Callable, slot=None, maxsize=128):
     """Memoize fn: make it remember the computed value for any argument list.
     If slot is specified, store result in that slot of first argument.

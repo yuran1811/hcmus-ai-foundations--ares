@@ -6,7 +6,14 @@ from .asset_loader import (
     load_character_animations,
     load_spritesheet,
 )
-from .base import byte_convert, get_timestamp, manhattan, memoize, split_into_chunks
+from .base import (
+    byte_convert,
+    get_timestamp,
+    manhattan,
+    memoize,
+    split_into_chunks,
+    time_convert,
+)
 from .config import (
     get_project_toml_data,
     get_screen_modes,
@@ -43,6 +50,7 @@ __all__ = [
     "manhattan",
     "memoize",
     "split_into_chunks",
+    "time_convert",
     #
     "get_project_toml_data",
     "get_screen_modes",
