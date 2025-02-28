@@ -230,6 +230,8 @@ class GameState(State):
         self.current_map_index = from_index
         self.selects["map"].change_selected_idx(self.current_map_index)
 
+        self.selects["algo"].update_options(list(self.map_sol.keys()))
+
     def load_map_state(self, from_index: int = 1):
         screen_size = get_screen_sz()
         weights, map_data = load_input_data(from_index=from_index)

@@ -69,6 +69,7 @@ class MenuState(State):
 
     def boot(self):
         self.game.audio.load_sound("intro", f"{BGMS_PATH}/cave_theme_2.wav")
+        self.game.audio.play("intro", -1)
 
     def enter(self):
         if self.game.audio.is_playing("intro"):

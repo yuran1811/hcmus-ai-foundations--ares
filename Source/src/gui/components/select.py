@@ -27,13 +27,13 @@ class SelectComponent(WithLabel):
     ):
         super().__init__(label=label)
 
+        self.default_placeholder = placeholder
         self.placeholder = placeholder
 
         self.show_label = show_label
         self.direction = direction
 
         self.options = options
-        self.option_rects: list[pg.Rect] = []
 
         self.expanded = False
         self.default_index = default_index
@@ -61,6 +61,15 @@ class SelectComponent(WithLabel):
 
     def update_rect_topleft(self, x: int, y: int):
         self.origin_rect.topleft = (x, y)
+
+    def update_options(self, options: list[str]):
+        self.options = options
+        self.num_options = len(options)
+        self.visible_options = min(self.num_options, self.height // self.option_height)
+
+        self.placeholder = (
+            "No options found" if self.num_options == 0 else self.default_placeholder
+        )
 
     def update(self):
         pass
