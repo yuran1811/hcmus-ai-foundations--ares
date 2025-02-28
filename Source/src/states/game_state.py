@@ -126,7 +126,7 @@ class GameState(State):
 
         self.load_map(from_index=self.current_map_index)
 
-        self.minimap = MiniMap(self, 200, 200)
+        self.minimap = MiniMap(self, 200, 150)
 
     def boot(self):
         pass
@@ -252,6 +252,9 @@ class GameState(State):
         self.load_map_state(from_index=self.current_map_index)
 
     def update_camera(self):
+        if self.minimap.dragging:
+            return
+
         screen_size = get_screen_sz()
         half_screen_w = screen_size[0] // 2
         half_screen_h = screen_size[1] // 2
@@ -276,7 +279,7 @@ class GameState(State):
 
     def zoom_minimap(self, delta: float):
         self.minimap.zoom_level = max(0.1, min(1.0, self.minimap.zoom_level + delta))
-        self.minimap._constrain_content()
+        self.minimap.constrain_content()
 
     def on_next_map(self):
         self.load_map(from_index=self.current_map_index + 1)

@@ -1,149 +1,208 @@
 import pygame as pg
 
-from config import GRID_SIZE
+from config import GRID_SIZE, MINIMAP_BG_COLOR, MINIMAP_PADDING
 from utils import get_screen_sz
 
 
 class MiniMap:
-    def __init__(self, game_state, width: int, height: int):
+    def __init__(self, game_state, width: int, height: int, *, enable_zoom=False):
         self.game_state = game_state
-
         self.width = width
         self.height = height
-        self.padding = 10
+        self.padding = MINIMAP_PADDING
         self.surface = pg.Surface((width, height))
 
         self.dragging = False
-        self.drag_offset = pg.Vector2(0, 0)
-
+        self.last_mouse_pos = pg.Vector2(0, 0)
         self.min_zoom = 0.1
-        self.max_zoom = 1.0
-        self.zoom_level = 0.25  # Initial zoom level (25% of original size)
-
+        self.max_zoom = 2.0
+        self.zoom_level = 0.25
         self.content_offset = pg.Vector2(0, 0)
+        self.fixed_position = pg.Vector2(0, 0)
+
+        self.enable_zoom = enable_zoom
 
     @property
     def position(self):
-        screen_width, screen_height = get_screen_sz()
-
-        return pg.Vector2(
-            screen_width - self.width - self.padding,
-            screen_height - self.height - self.padding,
+        screen_w, screen_h = get_screen_sz()
+        self.fixed_position = pg.Vector2(
+            screen_w - self.width - self.padding, screen_h - self.height - self.padding
         )
 
-    def _is_in_minimap(self, pos: pg.Vector2) -> bool:
-        """Check if position is within minimap bounds"""
-        minimap_pos = self.position
+        return self.fixed_position
+
+    def is_in_minimap(self, pos: pg.Vector2) -> bool:
         return pg.Rect(
-            minimap_pos.x, minimap_pos.y, self.width, self.height
+            self.position.x, self.position.y, self.width, self.height
         ).collidepoint(pos)
 
-    def _constrain_content(self):
-        """Keep content within minimap bounds"""
-        max_x = max(0, self.game_state.map.size[0] * self.zoom_level - self.width)
-        max_y = max(0, self.game_state.map.size[1] * self.zoom_level - self.height)
-        self.content_offset.x = max(0, min(self.content_offset.x, max_x))
-        self.content_offset.y = max(0, min(self.content_offset.y, max_y))
-
-    def get_tile_color(self, tile_type: str) -> tuple:
-        return {
-            "wall": (29, 41, 61),
-            "floor": (3, 7, 18),
-            "stone": (253, 199, 0),
-            "switch": (80, 162, 255),
-            "sos": (5, 223, 114),
-        }.get(tile_type, (0, 0, 0))
-
     def world_to_minimap(self, pos: pg.Vector2) -> pg.Vector2:
-        scale = self.zoom_level
-        return pg.Vector2(
-            (pos.x * scale) - self.content_offset.x,
-            (pos.y * scale) - self.content_offset.y,
-        )
+        """Convert game world coordinates to minimap coordinates"""
+        return (pos * self.zoom_level) - self.content_offset + self.position
 
-    def draw(self, screen: pg.Surface):
-        minimap_pos = self.position
+    def screen_to_minimap_space(self, screen_pos: pg.Vector2) -> pg.Vector2:
+        """Convert screen coordinates to minimap content space"""
+        return (screen_pos - self.position + self.content_offset) / self.zoom_level
 
-        # Draw minimap background
-        pg.draw.rect(
-            screen,
-            (30, 30, 46),
-            (minimap_pos.x, minimap_pos.y, self.width, self.height),
-            border_radius=5,
-        )
+    def get_tile_color(self, tile_type: str, grid_pos: pg.Vector2) -> tuple:
+        base_colors = {
+            "wall": (106, 106, 149, 255),
+            "floor": (30, 30, 46, 255),
+            "stone": (253, 199, 0, 255),
+            "switch": (80, 162, 255, 255),
+            "sos": (5, 223, 114, 255),
+        }
 
-        # Draw map tiles
+        if tile_type == "switch":
+            player_grid_pos = self.game_state.player.grid_pos
+            if (grid_pos.x, grid_pos.y) == (player_grid_pos.x, player_grid_pos.y):
+                return (*base_colors["switch"][:3], 128)
+
+        return base_colors.get(tile_type, (0, 0, 0, 255))
+
+    def draw_map_content(self, screen: pg.Surface):
         tile_size = max(1, int(GRID_SIZE * self.zoom_level))
-        for y in range(len(self.game_state.map.tile_grid)):
-            for x in range(len(self.game_state.map.tile_grid[y])):
-                tile = self.game_state.map.tile_grid[y][x]
-                screen_pos = self.world_to_minimap(pg.Vector2(x, y) * GRID_SIZE)
+        map_row, map_col = self.game_state.map.size
 
-                abs_pos = minimap_pos + screen_pos
+        if not self.enable_zoom:
+            self.width = tile_size * map_col // GRID_SIZE
+            self.height = (tile_size + 0.5) * map_row // GRID_SIZE
 
-                if (
-                    abs_pos.x + tile_size < minimap_pos.x
-                    or abs_pos.x > minimap_pos.x + self.width
+        for y in range(
+            int(self.content_offset.y // GRID_SIZE),
+            int((self.content_offset.y + self.height) / GRID_SIZE / self.zoom_level),
+        ):
+            for x in range(
+                int(self.content_offset.x // GRID_SIZE),
+                int((self.content_offset.x + self.width) / GRID_SIZE / self.zoom_level),
+            ):
+                if 0 <= y < len(self.game_state.map.tile_grid) and 0 <= x < len(
+                    self.game_state.map.tile_grid[y]
                 ):
-                    continue
-                if (
-                    abs_pos.y + tile_size < minimap_pos.y
-                    or abs_pos.y > minimap_pos.y + self.height
-                ):
-                    continue
+                    tile = self.game_state.map.tile_grid[y][x]
+                    minimap_pos = self.world_to_minimap(
+                        pg.Vector2(x * GRID_SIZE, y * GRID_SIZE)
+                    )
+                    if self.bg_rect.collidepoint(minimap_pos):
+                        color = self.get_tile_color(tile.tile_type, pg.Vector2(x, y))
+                        temp_surf = pg.Surface((tile_size, tile_size), pg.SRCALPHA)
+                        temp_surf.fill(color)
+                        screen.blit(temp_surf, (minimap_pos.x, minimap_pos.y))
 
-                pg.draw.rect(
-                    screen,
-                    self.get_tile_color(tile.tile_type),
-                    (abs_pos.x, abs_pos.y, tile_size, tile_size),
-                )
+    def draw_viewport_frame(self, screen: pg.Surface):
+        if not self.enable_zoom:
+            return
 
-        # Draw viewport frame
-        screen_size = get_screen_sz()
-        frame_pos = self.world_to_minimap(self.game_state.camera) + minimap_pos
+        screen_w, screen_h = get_screen_sz()
+        frame_size = pg.Vector2(screen_w, screen_h) * self.zoom_level
+
+        game_center = self.game_state.camera + pg.Vector2(screen_w, screen_h) / 2
+        minimap_center = self.world_to_minimap(game_center)
+
+        frame_pos = minimap_center - frame_size / 2
+
         frame_rect = pg.Rect(
-            frame_pos.x,
-            frame_pos.y,
-            screen_size[0] * self.zoom_level,
-            screen_size[1] * self.zoom_level,
+            max(
+                self.position.x,
+                min(frame_pos.x, self.position.x + self.width - frame_size.x),
+            ),
+            max(
+                self.position.y,
+                min(frame_pos.y, self.position.y + self.height - frame_size.y),
+            ),
+            frame_size.x,
+            frame_size.y,
         )
+
         pg.draw.rect(screen, (255, 255, 255), frame_rect, 2)
 
-        # Draw player
-        player_pos = (
-            self.world_to_minimap(self.game_state.player.grid_pos * GRID_SIZE)
-            + minimap_pos
-        )
+    def draw_player(self, screen: pg.Surface):
+        tile_size = max(1, int(GRID_SIZE * self.zoom_level))
+        player_pos = self.world_to_minimap(self.game_state.player.pixel_pos)
         pg.draw.circle(
             screen,
             (0, 255, 0),
-            (
-                int(player_pos.x + tile_size // 4),
-                int(player_pos.y + tile_size // 4),
-            ),
-            max(2, int(4 * self.zoom_level)),
+            (int(player_pos.x + tile_size / 2), int(player_pos.y + tile_size / 2)),
+            int(tile_size * 0.35),
         )
+
+    def draw(self, screen: pg.Surface):
+        self.bg_rect = pg.Rect(
+            self.position.x, self.position.y, self.width, self.height
+        )
+        pg.draw.rect(screen, MINIMAP_BG_COLOR, self.bg_rect, border_radius=5)
+
+        self.draw_map_content(screen)
+        self.draw_viewport_frame(screen)
+        self.draw_player(screen)
 
     def handle_event(self, event: pg.event.Event):
         mouse_pos = pg.Vector2(pg.mouse.get_pos())
-        minimap_pos = self.position
 
         if event.type == pg.MOUSEBUTTONDOWN:
-            if self._is_in_minimap(mouse_pos):
-                if event.button == 1:  # Left click drag to pan
-                    self.dragging = True
-                    self.drag_offset = mouse_pos - minimap_pos
-                elif event.button == 4:  # Mouse wheel up
-                    self.zoom_level = min(self.max_zoom, self.zoom_level + 0.05)
-                elif event.button == 5:  # Mouse wheel down
-                    self.zoom_level = max(self.min_zoom, self.zoom_level - 0.05)
-                self._constrain_content()
+            if self.is_in_minimap(mouse_pos):
+                if event.button == 1:  # Left click
+                    self.start_drag(mouse_pos)
+                elif event.button in (4, 5):  # Mouse wheel
+                    if self.enable_zoom:
+                        self.handle_zoom(event.button == 4)
 
-        elif event.type == pg.MOUSEBUTTONUP:
-            if event.button == 1:
-                self.dragging = False
+        elif event.type == pg.MOUSEBUTTONUP and event.button == 1:
+            self.end_drag()
 
         elif event.type == pg.MOUSEMOTION and self.dragging:
-            mouse_rel = pg.Vector2(event.rel) * (1 / self.zoom_level)
-            self.content_offset -= mouse_rel
-            self._constrain_content()
+            self.handle_drag(mouse_pos)
+
+    def start_drag(self, mouse_pos: pg.Vector2):
+        self.dragging = True
+        self.drag_start_camera = self.game_state.camera.copy()
+        self.drag_start_mouse = self.screen_to_minimap_space(mouse_pos)
+
+    def handle_drag(self, mouse_pos: pg.Vector2):
+        current_pos = self.screen_to_minimap_space(mouse_pos)
+        delta = (current_pos - self.drag_start_mouse) * self.zoom_level
+
+        self.game_state.camera = self.drag_start_camera + delta
+        self.constrain_camera()
+
+    def end_drag(self):
+        self.dragging = False
+
+        screen_size = pg.Vector2(get_screen_sz())
+        viewport_center = self.game_state.camera + screen_size / 2
+
+        self.game_state.camera = viewport_center - screen_size / 2
+        self.constrain_camera()
+
+    def handle_zoom(self, zoom_in: bool):
+        old_zoom = self.zoom_level
+        self.zoom_level *= 1.1 if zoom_in else 0.9
+        self.zoom_level = max(self.min_zoom, min(self.zoom_level, self.max_zoom))
+
+        # Adjust content offset to keep center position
+        zoom_ratio = self.zoom_level / old_zoom
+        self.content_offset = (
+            self.content_offset + pg.Vector2(self.width / 2, self.height / 2)
+        ) * zoom_ratio
+        self.content_offset -= pg.Vector2(self.width / 2, self.height / 2)
+        self.constrain_content()
+
+    def constrain_camera(self):
+        """Keep camera within map bounds"""
+        map_w, map_h = self.game_state.map.size
+        screen_w, screen_h = get_screen_sz()
+
+        self.game_state.camera.x = max(
+            0, min(self.game_state.camera.x, map_w * GRID_SIZE - screen_w)
+        )
+        self.game_state.camera.y = max(
+            0, min(self.game_state.camera.y, map_h * GRID_SIZE - screen_h)
+        )
+
+    def constrain_content(self):
+        """Keep minimap content within bounds"""
+        map_w, map_h = self.game_state.map.size
+        max_x = max(0, map_w * self.zoom_level - self.width)
+        max_y = max(0, map_h * self.zoom_level - self.height)
+        self.content_offset.x = max(0, min(self.content_offset.x, max_x))
+        self.content_offset.y = max(0, min(self.content_offset.y, max_y))
