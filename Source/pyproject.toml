@@ -7,7 +7,15 @@ authors = [
     { name = "KhoaNguyen-HCMUS", email = "anhkhoa515.dev@gmail.com" },
     { name = "callmezuy", email = "bmduy23@clc.fitus.edu.vn" },
 ]
+<<<<<<< HEAD
 dependencies = ["numpy>=2.2.3", "scipy>=1.15.2", "pygame>=2.6.1"]
+=======
+dependencies = [
+    "numpy>=2.2.3",
+    "scipy>=1.15.2",
+    "pygame>=2.6.1",
+]
+>>>>>>> 13d1998856ea5592dace2d4413bbda0213d6835d
 readme = "README.md"
 requires-python = ">= 3.8"
 license = { text = "MIT" }

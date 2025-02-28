@@ -59,12 +59,15 @@ class Direction(Enum):
     DOWN = 1, "DOWN", "d", (0, 1)
     LEFT = 2, "LEFT", "l", (-1, 0)
     RIGHT = 3, "RIGHT", "r", (1, 0)
+<<<<<<< HEAD
 
     @classmethod
     def from_char(cls, char):
         for direction in Direction:
             if direction.value[2] == char:
                 return direction
+=======
+>>>>>>> 13d1998856ea5592dace2d4413bbda0213d6835d
 
     @classmethod
     def get_label(cls, direction):
@@ -81,6 +84,7 @@ class Direction(Enum):
     @classmethod
     def get_vec(cls, direction):
         return cls(direction).value[3]
+<<<<<<< HEAD
 
 
 class Orientation(Enum):
@@ -91,3 +95,5 @@ class Orientation(Enum):
 class GameStateType(Enum):
     PLAYING = 0
     VICTORY = 1
+=======
+>>>>>>> 13d1998856ea5592dace2d4413bbda0213d6835d

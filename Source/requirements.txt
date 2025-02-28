@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+=======
+-e file:///C:/Users/trieu/Desktop/gh/hcmus-ai-foundations/Source
+>>>>>>> 13d1998856ea5592dace2d4413bbda0213d6835d
 colorama==0.4.6
 iniconfig==2.0.0
 numpy==2.2.3

@@ -1,4 +1,5 @@
 from core.game import Game
+<<<<<<< HEAD
 from utils import (
     get_project_toml_data,
     parse_args,
@@ -28,5 +29,11 @@ def main() -> int:
 
     if args.gui:
         Game().run()
+=======
+
+
+def main() -> int:
+    Game().run()
+>>>>>>> 13d1998856ea5592dace2d4413bbda0213d6835d
 
     return 0
