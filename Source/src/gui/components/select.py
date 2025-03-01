@@ -17,6 +17,7 @@ class SelectComponent(WithLabel):
         default_index=0,
         *,
         placeholder="Select an option",
+        placeholder_empty="No options found",
         label="",
         show_label: bool = False,
         direction: Direction = Direction.DOWN,
@@ -29,6 +30,7 @@ class SelectComponent(WithLabel):
 
         self.default_placeholder = placeholder
         self.placeholder = placeholder
+        self.placeholder_empty = placeholder_empty
 
         self.show_label = show_label
         self.direction = direction
@@ -68,7 +70,9 @@ class SelectComponent(WithLabel):
         self.visible_options = min(self.num_options, self.height // self.option_height)
 
         self.placeholder = (
-            "No options found" if self.num_options == 0 else self.default_placeholder
+            self.placeholder_empty
+            if self.num_options == 0
+            else self.default_placeholder
         )
 
     def update(self):

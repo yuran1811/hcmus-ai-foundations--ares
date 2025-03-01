@@ -94,6 +94,7 @@ class GameState(State):
                 Algorithm.get_labels(),
                 -1,
                 placeholder="Select algo",
+                placeholder_empty="No algo found",
                 height=240,
                 on_select=lambda _: self.on_algo_select(Algorithm.get_labels()[_]),
             ),
