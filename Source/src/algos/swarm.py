@@ -1,8 +1,11 @@
 from __future__ import annotations
 
-from utils.metrics import profile
+import numpy as np
+from scipy.optimize import linear_sum_assignment
 
-from .search import Point, ProblemState, Search, StonesPos
+from utils import manhattan, profile
+
+from .search import Point, ProblemState, Search, StonesPos, StonesPosFreeze
 
 
 class Swarm(Search):
@@ -15,10 +18,60 @@ class Swarm(Search):
         stones_pos: StonesPos,
         switches_pos: frozenset[Point],
         use_deadlock: bool = True,
+        use_optimized: bool = True,
     ):
         super().__init__(
-            num_row, num_col, matrix, player_pos, stones_pos, switches_pos, use_deadlock
+            num_row,
+            num_col,
+            matrix,
+            player_pos,
+            stones_pos,
+            switches_pos,
+            use_deadlock=use_deadlock,
+            use_weight=True,
         )
+
+        self.use_optimized = use_optimized
+
+    def heuristic(
+        self,
+        stones_pos: StonesPosFreeze,
+        switches_pos: frozenset[Point],
+    ):
+        return (
+            self.hungarian_heuristic(stones_pos, switches_pos)
+            if self.use_optimized
+            else self.mahattan_heuristic(stones_pos, switches_pos)
+        )
+
+    def mahattan_heuristic(
+        self,
+        stones_pos: StonesPosFreeze,
+        switches_pos: frozenset[Point],
+    ):
+        sum = 0
+        for stone in stones_pos:
+            sum = sum + stone[2] * min(
+                [
+                    manhattan(stone[0], stone[1], switch[0], switch[1])
+                    for switch in switches_pos
+                ]
+            )
+        return sum
+
+    def hungarian_heuristic(
+        self,
+        stones_pos: StonesPosFreeze,
+        switches_pos: frozenset[Point],
+    ):
+        dists = np.zeros((len(stones_pos), len(switches_pos)))
+
+        for i, (sx, sy, w) in enumerate(stones_pos):
+            for j, (gx, gy) in enumerate(switches_pos):
+                dists[i, j] = w * manhattan(sx, sy, gx, gy)
+
+        row_ind, col_ind = linear_sum_assignment(dists)
+        return dists[row_ind, col_ind].sum()
 
     @profile
     def search(self):
@@ -30,10 +83,61 @@ class Swarm(Search):
         return "Impossible", 0, expanded_count, len(closed)
 
 
-# def heuristic(node, end, pos):
-#     x1, y1 = pos[node]
-#     x2, y2 = pos[end]
-#     return ((x1 - x2) ** 2 + (y1 - y2) ** 2) ** 0.5
+class SwarmConvergent(Swarm):
+    @profile
+    def search(self):
+        closed: set[ProblemState] = set()
+        closed.add(self.initial_state)
+
+        expanded_count = 0
+
+        return "Impossible", 0, expanded_count, len(closed)
+
+
+class SwarmBidirectional(Swarm):
+    @profile
+    def search(self):
+        closed: set[ProblemState] = set()
+        closed.add(self.initial_state)
+
+        expanded_count = 0
+
+        return "Impossible", 0, expanded_count, len(closed)
+
+
+class AntColonyOptimization(Search):
+    def __init__(
+        self,
+        num_row: int,
+        num_col: int,
+        matrix: list[list[str]],
+        player_pos: Point,
+        stones_pos: StonesPos,
+        switches_pos: frozenset[Point],
+        use_deadlock: bool = True,
+        use_optimized: bool = True,
+    ):
+        super().__init__(
+            num_row,
+            num_col,
+            matrix,
+            player_pos,
+            stones_pos,
+            switches_pos,
+            use_deadlock=use_deadlock,
+            use_weight=True,
+        )
+
+        self.use_optimized = use_optimized
+
+    @profile
+    def search(self):
+        closed: set[ProblemState] = set()
+        closed.add(self.initial_state)
+
+        expanded_count = 0
+
+        return "Impossible", 0, expanded_count, len(closed)
 
 
 # def swarm_search(matrix, start, end, pos):

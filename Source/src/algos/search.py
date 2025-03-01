@@ -33,7 +33,10 @@ class ProblemState:
         stones_pos: StonesPos,
         gval: int = -1,
         fval: float = -1,
+        *,
         pushed_stone: Stone | None = None,
+        with_heuristic=False,
+        use_weight=False,
     ):
         self.ancestor = ancestor
 
@@ -44,12 +47,18 @@ class ProblemState:
             stones_pos if isinstance(stones_pos, frozenset) else frozenset(stones_pos)
         )
 
+        self.gval = gval
+        self.fval = fval if with_heuristic else gval
+
         self.pushed_stone = pushed_stone
 
-        self.gval = gval
-        self.fval = fval
+        self.with_heuristic = with_heuristic
+        self.use_weight = use_weight
 
     def __lt__(self, state: ProblemState):
+        if not self.with_heuristic:
+            return self.gval < state.gval
+
         if self.fval == state.fval:
             return self.gval > state.gval
         return self.fval < state.fval
@@ -58,12 +67,25 @@ class ProblemState:
         if not isinstance(state, ProblemState):
             return NotImplemented
 
-        return (
-            self.player_pos == state.player_pos and self.stones_pos == state.stones_pos
-        )
+        if self.player_pos != state.player_pos:
+            return False
+
+        if self.use_weight:
+            return self.stones_pos == state.stones_pos
+
+        self_stones = {(x, y) for x, y, _ in self.stones_pos}
+        state_stones = {(x, y) for x, y, _ in state.stones_pos}
+        return self_stones == state_stones
 
     def __hash__(self):
-        return hash((self.player_pos, self.stones_pos))
+        return hash(
+            (
+                self.player_pos,
+                self.stones_pos
+                if self.use_weight
+                else frozenset({(x, y) for x, y, _ in self.stones_pos}),
+            )
+        )
 
     def is_final(self, switches_pos: frozenset[Point]):
         return frozenset({(x, y) for x, y, _ in self.stones_pos}) == switches_pos
@@ -218,13 +240,17 @@ class Search(ABC):
         player_pos: Point,
         stones_pos: StonesPos,
         switches_pos: frozenset[Point],
+        *,
         use_deadlock: bool = True,
+        use_weight: bool = False,
     ):
         self.num_row = num_row
         self.num_col = num_col
         self.matrix = matrix
 
         self.switches_pos = frozenset(switches_pos)
+
+        self.use_weight = use_weight
         self.initial_state = ProblemState(None, player_pos, stones_pos)
 
         self.use_deadlock = use_deadlock
@@ -282,42 +308,46 @@ class Search(ABC):
 
         return True
 
-    def go(self, current_state: ProblemState, dir: Direction, heuristic=None):
-        player_x, player_y = current_state.player_pos
-
+    def go(self, current_state: ProblemState, dir: Direction, *, heuristic=None):
+        x, y = current_state.player_pos
         axis_x, axis_y = Direction.get_vec(dir)
 
         new_stone_pos = set(current_state.stones_pos)
-        stone = get_stone(
-            current_state.stones_pos, (player_x + axis_x, player_y + axis_y)
-        )
+        stone = get_stone(current_state.stones_pos, (x + axis_x, y + axis_y))
         if stone:
             new_stone_pos.remove(stone)
             new_stone_pos.add((stone[0] + axis_x, stone[1] + axis_y, stone[2]))
         new_stone_pos = frozenset(new_stone_pos)
 
-        if heuristic:
+        if heuristic or self.use_weight:
             gval = current_state.gval + (stone[2] if stone else 1)
 
             return ProblemState(
                 current_state,
-                (player_x + axis_x, player_y + axis_y),
+                (x + axis_x, y + axis_y),
                 new_stone_pos,
                 gval,
-                (gval + heuristic(new_stone_pos, self.switches_pos)),
-                stone,
+                (
+                    gval
+                    + (heuristic(new_stone_pos, self.switches_pos) if heuristic else 0)
+                ),
+                pushed_stone=stone,
+                with_heuristic=bool(heuristic),
+                use_weight=self.use_weight,
             )
 
         return ProblemState(
             current_state,
-            (player_x + axis_x, player_y + axis_y),
+            (x + axis_x, y + axis_y),
             new_stone_pos,
             pushed_stone=stone,
+            with_heuristic=False,
+            use_weight=self.use_weight,
         )
 
     def construct_path(self, state: ProblemState):
         path = ""
-        weight = 0
+        tot_w = 0
 
         movements = [Direction.get_movement(_) for _ in Direction]
         pushings = [Direction.get_pushing(_) for _ in Direction]
@@ -326,7 +356,7 @@ class Search(ABC):
             x1, y1 = state.ancestor.player_pos
             x2, y2 = state.player_pos
 
-            weight += state.pushed_stone[2] if state.pushed_stone else 0
+            tot_w += state.pushed_stone[2] if state.pushed_stone else 0
 
             if x2 > x1:
                 path = (movements[1] if not state.pushed_stone else pushings[1]) + path
@@ -339,7 +369,7 @@ class Search(ABC):
 
             state = state.ancestor
 
-        return path, weight
+        return path, tot_w
 
     @abstractmethod
     @profile

@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from constants.enums import Direction
-from utils.metrics import profile
+from utils import profile
 
 from .search import Point, ProblemState, Search, StonesPos
 
@@ -18,30 +18,34 @@ class DFS(Search):
         use_deadlock: bool = True,
     ):
         super().__init__(
-            num_row, num_col, matrix, player_pos, stones_pos, switches_pos, use_deadlock
+            num_row,
+            num_col,
+            matrix,
+            player_pos,
+            stones_pos,
+            switches_pos,
+            use_deadlock=use_deadlock,
         )
 
     @profile
     def search(self):
-        frontier: list[ProblemState] = []  # Stack 
-        frontier.append(self.initial_state)
+        frontier: list[ProblemState] = [self.initial_state]
 
         closed: set[ProblemState] = set()
         closed.add(self.initial_state)
 
         expanded_count = 0
-        while frontier:  
+        while frontier:
             expanded_count += 1
 
-            current_state = frontier.pop() 
+            current_state = frontier.pop()
+            if current_state.is_final(self.switches_pos):
+                path, w = self.construct_path(current_state)
+                return path, w, expanded_count, len(closed)
 
             for dir in Direction:
                 if self.can_go(current_state, dir):
                     new_state = self.go(current_state, dir)
-
-                    if new_state.is_final(self.switches_pos):
-                        path, w = self.construct_path(new_state)
-                        return path, w, expanded_count, len(closed)
 
                     if new_state not in closed:
                         closed.add(new_state)
