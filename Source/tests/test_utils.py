@@ -71,8 +71,8 @@ def test_get_speed():
 
 
 def test_io_filenames():
-    assert get_input_filenames() == [f"input-{x:02}.txt" for x in range(0, 36)]
-    assert get_output_filenames() == [f"output-{x:02}.txt" for x in range(0, 36)]
+    assert get_input_filenames() == [f"input-{x:02}.txt" for x in range(0, 37)]
+    assert get_output_filenames() == [f"output-{x:02}.txt" for x in range(0, 37)]
 
 
 def test_load_input_data():
