@@ -1,8 +1,13 @@
-<<<<<<< HEAD
 \subsection{Breadth First Search}
-\noindent Breadth First Search (BFS), as the name says, explores the search space in the increasing order of the depth and the costs of traveling from one state to another is assumed to be a positive number. Typically, this algorithm is often associated with the concept of stack and queue and pushing and popping from the stack. Due to the larger states explored at shorter depths, the space complexity is very high of about $O(b^d)$ and the time complexity is $O(b^d)$.
+\noindent Breadth First Search (BFS), as the name says, explores the search space in the increasing order of the depth and the costs of traveling from one state to another is assumed to be a positive number. Typically, this algorithm is often associated with the concept of stack and queue and pushing and popping from the stack.
 
-\subsubsection{Pseudo Code}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\textwidth]{./imgs/bfs.png}
+	\caption{Breadth First Search}
+\end{figure}
+
+\subsubsection{Pseudocode}
 \begin{algorithm}[H]
 	\caption{Breadth First Search (\textit{state, maxdepth, maxtimeout})}
 	\label{alg:bfs}
@@ -31,103 +36,10 @@
 
 \subsubsection{Implementation}
 
-\subsection{BFS Algorithms}
-\subsubsection{Introduction}
-Breadth-First Search (BFS) is a fundamental graph traversal algorithm used to explore nodes in a graph or tree data structure. It operates by visiting all nodes at the current depth level (``breadth'') before moving to nodes at the next depth level. BFS guarantees the shortest path in an unweighted graph, making it highly useful in applications like network routing, social network analysis, and puzzle solving.
+\subsubsection{Time and Space Complexity}
+\textbf{Time Complexity:} $O(V + E)$, where $V$ is the number of vertices and $E$ is the number of edges. Each node and edge is processed once.
 
-\subsubsection{Algorithm Overview}
-\begin{enumerate}
-	\item Key Principles
-	      \begin{description}
-		      \item \textbf{Queue Data Structure:} BFS uses a queue (First-In-First-Out principle) to track nodes to be explored.
-		      \item \textbf{Layer-by-Layer Exploration:} Nodes are visited level by level, starting from the root (or source node).
-		      \item \textbf{Visited Tracking:} A visited array or hash map prevents reprocessing nodes, avoiding cycles.
-	      \end{description}
+\textbf{Space Complexity:} $O(V)$ in the worst case, as the queue stores all nodes at the widest level of the graph.
 
-	\item Steps of BFS
-	      \begin{enumerate}
-		      \item \textbf{Initialize:}
-		            \begin{description}
-			            \item Select a starting node (root).
-			            \item Create a queue and add the root node.
-			            \item Mark the root as visited.
-		            \end{description}
-		      \item \textbf{Loop Until Queue is Empty:}
-		            \begin{description}
-			            \item Dequeue the front node.
-			            \item Process the node (e.g., print its value).
-			            \item Enqueue all adjacent unvisited nodes and mark them as visited.
-		            \end{description}
-		      \item \textbf{Terminate:} When the queue is empty, traversal is complete.
-	      \end{enumerate}
-\end{enumerate}
-
-% \subsubsection{Pseudocode}
-% \begin{lstlisting}
-% 	BFS(Graph G, StartNode):
-% 		Initialize empty Queue Q
-% 		Initialize empty Set visited
-% 		Q.enqueue(StartNode)
-% 		visited.add(StartNode)
-	
-% 		while Q is not empty:
-% 			current = Q.dequeue()
-% 			Process(current)  // e.g., print node
-	
-% 			for each neighbor in G.adjacentNodes(current):
-% 				if neighbor not in visited:
-% 					visited.add(neighbor)
-% 					Q.enqueue(neighbor)
-% 	\end{lstlisting}
-
-% \subsubsection{Time and Space Complexity}
-% \textbf{Time Complexity:} $O(V + E)$, where $V$ is the number of vertices and $E$ is the number of edges. Each node and edge is processed once.
-
-% \textbf{Space Complexity:} $O(V)$ in the worst case, as the queue stores all nodes at the widest level of the graph.
-
-% \subsubsection{Applications}
-% \begin{itemize}
-% 	\item \textbf{Shortest Path in Unweighted Graphs:} BFS guarantees the minimum number of edges between two nodes.
-% 	\item \textbf{Social Networks:} Find connections or degrees of separation between users.
-% 	\item \textbf{Web Crawling:} Index web pages level by level.
-% 	\item \textbf{Cycle Detection:} Identify cycles in undirected graphs.
-% 	\item \textbf{Puzzle Solving:} Solve problems like the water jug'' or maze pathfinding'' efficiently.
-% \end{itemize}
-
-% \subsubsection{Advantages and Limitations}
-% \begin{itemize}
-
-% 	\item \textbf{Advantages}
-% 	      \begin{itemize}
-% 		      \item Optimal for finding the shortest path in unweighted graphs.
-% 		      \item Systematic and complete (guarantees finding a solution if one exists).
-% 	      \end{itemize}
-
-% 	\item \textbf{Limitations}
-% 	      \begin{itemize}
-% 		      \item High memory consumption for wide graphs due to queue storage.
-% 		      \item Inefficient for deep graphs compared to Depth-First Search (DFS).
-% 	      \end{itemize}
-
-% \end{itemize}
-% \subsubsection{Comparison with Depth-First Search (DFS)}
-% \begin{center}
-% 	\begin{tabular}{|c|c|c|}
-% 		\hline
-% 		\textbf{Criteria} & \textbf{BFS}                    & \textbf{DFS}                      \\
-% 		\hline
-% 		Data Structure    & Queue                           & Stack                             \\
-% 		\hline
-% 		Optimal Path      & Yes (unweighted graphs)         & No                                \\
-% 		\hline
-% 		Memory Usage      & Higher (stores all neighbors)   & Lower (depth-based)               \\
-% 		\hline
-% 		Use Cases         & Shortest path, network analysis & Topological sorting, backtracking \\
-% 		\hline
-% 	\end{tabular}
-% \end{center}
-
-% \subsubsection{Conclusion}
-% BFS is a versatile algorithm with wide-ranging applications in computer science and real-world systems. Its ability to systematically explore graphs layer by layer makes it indispensable for problems requiring shortest-path solutions or comprehensive traversal. However, its memory constraints necessitate careful consideration when applied to large-scale datasets.
 
 

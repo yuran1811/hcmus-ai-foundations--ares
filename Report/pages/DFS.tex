@@ -1,7 +1,13 @@
 \subsection{Depth First Search}
-\noindent Depth First Search (DFS) is a special case of backtracking search algorithm. The search starts from the root and proceeds to the farthest node before backtracking. The difference between this and the backtracking is that this stops the search once a goal is reached and does not care if it is not minimum. The space complexity is $O(D)$ and the time complexity is $O(b^D)$ which is very high.
+\noindent Depth First Search (DFS) is a special case of backtracking search algorithm. The search starts from the root and proceeds to the farthest node before backtracking. The difference between this and the backtracking is that this stops the search once a goal is reached and does not care if it is not minimum.
 
-\subsubsection{Pseudo Code}
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\textwidth]{./imgs/dfs.png}
+	\caption{Depth First Search}
+\end{figure}
+
+\subsubsection{Pseudocode}
 \begin{algorithm}[H]
 	\caption{Depth First Search (\textit{state, maxdepth, maxtimeout})}
 	\label{alg:dfs}
@@ -27,3 +33,5 @@
 \end{algorithm}
 
 \subsubsection{Implementation}
+
+\subsubsection{Time and Space Complexity}

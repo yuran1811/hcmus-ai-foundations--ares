@@ -1,6 +1,13 @@
 \subsection{A* Search with heuristic}
 \noindent A* algorithm is one of the popular technique used in path finding and graph traversals. This algorithm completely relies on heuristics for computing the future cost of a problem. This algorithm is equivalent to the uniform cost search with modified edge cost. This heuristics is chosen according to the case where the algorithm is implemented, thus emphasizing the importance of domain knowledge. This algorithm is consistent if the modified cost is greater than zero.
 
+\begin{figure}[H]
+	\centering
+	\includegraphics[width=0.8\textwidth]{./imgs/astar.png}
+	\caption{A* Algorithm}
+\end{figure}
+
+\subsubsection{Pseudocode}
 \begin{algorithm}[H]
 	\caption{A* Search with heuristic (\textit{state, maxdepth, maxtimeout})}
 	\label{alg:ucs}
@@ -31,3 +38,5 @@
 \end{algorithm}
 
 \subsubsection{Implementation}
+
+\subsubsection{Time and Space Complexity}
