@@ -4,7 +4,8 @@ import os
 import re
 
 from algos import BFS, DFS, GBFS, UCS, AStar, Dijkstra, Swarm
-from algos.search import StonesPosFreeze
+from algos.search import Search, StonesPosFreeze
+from algos.swarm import AntColonyOptimization, SwarmBidirectional, SwarmConvergent
 from constants.enums import Algorithm, GridItem
 from constants.paths import INPUT_DIR
 from utils import generate_output_content
@@ -85,7 +86,7 @@ class SokobanSolver:
 
         return self
 
-    def searching(self):
+    def searching(self, algos: list[Algorithm] = []):
         args = (
             self.num_row,
             self.num_col,
@@ -97,14 +98,26 @@ class SokobanSolver:
             # use_optimized=False,
         )
 
+        __algos_searching: dict[str, Search] = {
+            Algorithm.get_label(Algorithm.BFS): BFS(*args),
+            Algorithm.get_label(Algorithm.DFS): DFS(*args),
+            Algorithm.get_label(Algorithm.UCS): UCS(*args),
+            Algorithm.get_label(Algorithm.ASTAR): AStar(*args),
+            Algorithm.get_label(Algorithm.GREEDY): GBFS(*args),
+            Algorithm.get_label(Algorithm.DIJKSTRA): Dijkstra(*args),
+            Algorithm.get_label(Algorithm.SWARM): Swarm(*args),
+            Algorithm.get_label(Algorithm.CONVERGENT_SWARM): SwarmConvergent(*args),
+            Algorithm.get_label(Algorithm.BIDIR_SWARM): SwarmBidirectional(*args),
+            Algorithm.get_label(Algorithm.ANT_COLONY): AntColonyOptimization(*args),
+        }
+
+        if len(algos) == 0:
+            return {key: algo.search() for key, algo in __algos_searching.items()}
+
         return {
-            Algorithm.get_label(Algorithm.BFS): BFS(*args).search(),
-            Algorithm.get_label(Algorithm.DFS): DFS(*args).search(),
-            Algorithm.get_label(Algorithm.UCS): UCS(*args).search(),
-            Algorithm.get_label(Algorithm.ASTAR): AStar(*args).search(),
-            Algorithm.get_label(Algorithm.GREEDY): GBFS(*args).search(),
-            Algorithm.get_label(Algorithm.DIJKSTRA): Dijkstra(*args).search(),
-            Algorithm.get_label(Algorithm.SWARM): Swarm(*args).search(),
+            key: algo.search()
+            for key, algo in __algos_searching.items()
+            if key in algos
         }
 
 
