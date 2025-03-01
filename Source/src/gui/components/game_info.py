@@ -13,9 +13,18 @@ class GameInfo(WithFont):
         "fps": (255, 137, 4),
         "steps": (0, 166, 244),
         "weight": (5, 233, 144),
+        "simulspeed": (153, 161, 175),
     }
 
-    def __init__(self, x: int = 0, y: int = 0, *, font_size: int = 24, show_fps=False):
+    def __init__(
+        self,
+        x: int = 0,
+        y: int = 0,
+        *,
+        font_size: int = 24,
+        show_fps=False,
+        simulation_speed=1,
+    ):
         super().__init__(font_size=font_size)
 
         self.pos = (x, y)
@@ -23,6 +32,7 @@ class GameInfo(WithFont):
         self.steps = 0
         self.total_weight = 0
         self.current_fps = 0
+        self.simulation_speed = simulation_speed
 
         self.time_running = False
         self.start_time: float | None = None
@@ -68,6 +78,9 @@ class GameInfo(WithFont):
         if self.steps == 1 and not self.timer_running:
             self.start_timer()
 
+    def update_simulation_speed(self, speed: int):
+        self.simulation_speed = speed
+
     def update(self, dt: float, clock: pg.time.Clock):
         self.current_fps = int(clock.get_fps())
 
@@ -80,6 +93,9 @@ class GameInfo(WithFont):
                     f"Steps: {self.steps}",
                     f"Weight: {self.total_weight}",
                     f"Time: {self.format_time(self.get_elapsed_time())}",
+                    f"SimulSpeed: {self.simulation_speed}x"
+                    if self.simulation_speed > 1
+                    else "",
                 ],
             )
         )

@@ -19,7 +19,6 @@ from gui.handlers.cursor import cursor_handler
 from utils import (
     get_input_filenames,
     get_screen_sz,
-    get_speed,
     load_input_data,
     load_output_data,
     normalize_output_data,
@@ -65,14 +64,14 @@ class GameState(State):
             10,
             60,
             show_play=True,
-            # show_speed=True,
+            show_speed=True,
             show_zoom=True,
             orientation=Orientation.VERTICAL,
             scale_factor=4,
             on_play=lambda: self.toggle_simulation(True),
             on_pause=lambda: self.toggle_simulation(False),
-            # on_speed_up=lambda _: self.on_speed_change(_),
-            # on_speed_down=lambda _: self.on_speed_change(-_),
+            on_speed_up=lambda _: self.game_info.update_simulation_speed(_),
+            on_speed_down=lambda _: self.game_info.update_simulation_speed(_),
             on_prev=lambda: self.load_map(
                 from_index=(self.current_map_index - 1 + input_filenames_sz)
                 % input_filenames_sz
@@ -291,9 +290,6 @@ class GameState(State):
 
         self.dialogs["victory"].toggle_confetti(False)
 
-    def on_speed_change(self, speed: int):
-        self.controllers.state["speed"] = get_speed(abs(speed), speed > 0)
-
     def on_algo_select(self, algo: str):
         self.simulate_algo = algo
         self.update_simulate_algo(algo)
@@ -436,29 +432,30 @@ class GameState(State):
         __move_queue = [_.lower() for _ in path if _.lower() in "udlr"]
 
         def movement_generator():
-            step_time = 0.0
+            step_timer = 0.0
             current_step = 0
+            base_delay = 0.5  # Base time between steps at 1x speed
 
             while current_step < len(__move_queue):
                 if not self.is_simulating:
                     yield False
 
-                speed_factor = self.controllers.state["speed"]
-                frame_delay = 0.2 / speed_factor
+                step_timer += self.game.dt
 
-                # Wait until step time has passed
-                while step_time < frame_delay:
-                    step_time += self.game.dt
+                speed_factor = max(0.1, self.controllers.state.get("speed", 1.0))
+                frame_delay = max(base_delay / speed_factor, 0.2)
+
+                if step_timer >= frame_delay:
+                    step_timer %= frame_delay
+
+                    direction = Direction.from_char(__move_queue[current_step])
+                    if direction:
+                        self.player.try_move(direction, on_move=self.on_player_move)
+                        current_step += 1
+
                     yield False
-
-                # Reset step timer and process move
-                step_time = 0.0
-                direction = Direction.from_char(__move_queue[current_step])
-                if direction:
-                    self.player.try_move(direction, on_move=self.on_player_move)
-                    current_step += 1
-
-                yield False
+                else:
+                    yield False
 
             self.is_simulating = False
             yield True
