@@ -7,7 +7,7 @@ from algos import BFS, DFS, GBFS, UCS, AStar, Dijkstra, Swarm
 from algos.search import StonesPosFreeze
 from constants.enums import Algorithm, GridItem
 from constants.paths import INPUT_DIR
-from utils import byte_convert, generate_output_content
+from utils import generate_output_content
 
 
 class SokobanSolver:
@@ -120,7 +120,7 @@ if __name__ == "__main__":
                 weight,
                 expanded_node,
                 time,
-                byte_convert(mem_peak),
+                mem_peak,
                 path,
             )
         )

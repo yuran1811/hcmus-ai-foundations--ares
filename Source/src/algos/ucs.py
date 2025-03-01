@@ -1,8 +1,11 @@
 from __future__ import annotations
 
-from utils.metrics import profile
+import heapq
 
-from .search import Point, ProblemState, Search, StonesPos
+from constants.enums import Direction
+from utils import profile
+
+from .search import Point, ProblemState, Search, StateHashTable, StonesPosFreeze
 
 
 class UCS(Search):
@@ -12,54 +15,74 @@ class UCS(Search):
         num_col: int,
         matrix: list[list[str]],
         player_pos: Point,
-        stones_pos: StonesPos,
+        stones_pos: StonesPosFreeze,
         switches_pos: frozenset[Point],
         use_deadlock: bool = True,
     ):
         super().__init__(
-            num_row, num_col, matrix, player_pos, stones_pos, switches_pos, use_deadlock
+            num_row,
+            num_col,
+            matrix,
+            player_pos,
+            stones_pos,
+            switches_pos,
+            use_deadlock=use_deadlock,
+            use_weight=True,
         )
+
+        self.initial_state.gval = 0
+
+    def handle(
+        self,
+        new_state: ProblemState,
+        closed: set[ProblemState],
+        frontier: list[ProblemState],
+        state_hash_table: StateHashTable,
+    ):
+        id = hash(new_state)
+
+        if new_state not in closed:
+            heapq.heappush(frontier, new_state)
+            closed.add(new_state)
+            state_hash_table[id] = [new_state, True]
+            return
+
+        if new_state.gval < state_hash_table[id][0].gval:
+            state_hash_table[id][0].gval = new_state.gval
+            state_hash_table[id][0].ancestor = new_state.ancestor
+
+            if not state_hash_table[id][1]:
+                state_hash_table[id][1] = True
+                heapq.heappush(frontier, new_state)
 
     @profile
     def search(self):
+        frontier: list[ProblemState] = []
+        heapq.heappush(frontier, self.initial_state)
+
         closed: set[ProblemState] = set()
         closed.add(self.initial_state)
 
+        state_hash_table = {hash(self.initial_state): [self.initial_state, True]}
+
         expanded_count = 0
+        while frontier:
+            current_state = heapq.heappop(frontier)
+            if current_state.is_final(self.switches_pos):
+                path, w = self.construct_path(current_state)
+                return path, w, expanded_count, len(closed)
+
+            current_hash = hash(current_state)
+            if state_hash_table[current_hash][0] != current_state:
+                continue
+
+            expanded_count += 1
+
+            state_hash_table[current_hash][1] = False
+
+            for dir in Direction:
+                if self.can_go(current_state, dir):
+                    new_state = self.go(current_state, dir)
+                    self.handle(new_state, closed, frontier, state_hash_table)
 
         return "Impossible", 0, expanded_count, len(closed)
-
-
-# def ucs(matrix, start, end):
-#     path = []
-#     visited = {start: None}
-#     pq = PriorityQueue()
-#     pq.put((0, start))
-#     cost = {start: 0}
-
-#     frontier = [(start, 0)]
-#     # print(f"frontier: {frontier}")
-
-#     while not pq.empty():
-#         current_cost, node = pq.get()
-#         frontier = sorted([(n, c) for c, n in pq.queue], key=lambda x: x[1])
-#         # print(f"frontier: {frontier}" + f" queue: {pq.queue}")
-#         if node == end:
-#             break
-#         for neighbor, weight in enumerate(matrix[node]):
-#             if weight:
-#                 new_cost = current_cost + weight
-#                 if neighbor not in cost or new_cost < cost[neighbor]:
-#                     cost[neighbor] = new_cost
-#                     pq.put((new_cost, neighbor))
-#                     visited[neighbor] = node
-
-#     if end in visited:
-#         node = end
-#         while node is not None:
-#             path.insert(0, node)
-#             node = visited[node]
-
-#     print(f"path: {path}")
-#     print(f"visited: {visited}")
-#     return visited, path

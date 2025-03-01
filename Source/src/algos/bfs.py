@@ -1,9 +1,9 @@
 from __future__ import annotations
 
-from queue import Queue
+from collections import deque
 
 from constants.enums import Direction
-from utils.metrics import profile
+from utils import profile
 
 from .search import Point, ProblemState, Search, StonesPos
 
@@ -20,22 +20,28 @@ class BFS(Search):
         use_deadlock: bool = True,
     ):
         super().__init__(
-            num_row, num_col, matrix, player_pos, stones_pos, switches_pos, use_deadlock
+            num_row,
+            num_col,
+            matrix,
+            player_pos,
+            stones_pos,
+            switches_pos,
+            use_deadlock=use_deadlock,
         )
 
     @profile
     def search(self):
-        frontier: Queue[ProblemState] = Queue()  # the FIFO queue
-        frontier.put(self.initial_state)
+        frontier: deque[ProblemState] = deque()  # the FIFO queue
+        frontier.append(self.initial_state)
 
         closed: set[ProblemState] = set()
         closed.add(self.initial_state)
 
         expanded_count = 0
-        while not frontier.empty():
+        while frontier:
             expanded_count += 1
 
-            current_state = frontier.get()  # get the head node of the queue
+            current_state = frontier.popleft()
 
             for dir in Direction:
                 if self.can_go(current_state, dir):
@@ -47,6 +53,6 @@ class BFS(Search):
 
                     if new_state not in closed:
                         closed.add(new_state)
-                        frontier.put(new_state)
+                        frontier.append(new_state)
 
         return "Impossible", 0, expanded_count, len(closed)

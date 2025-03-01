@@ -1,8 +1,8 @@
 - [x] export `requirements.txt`
 - algo opt
-  - [ ] use hashing for visited state (called `tranposition table`)
-  - [ ] deadlock detection (simple/count area/freeze/...)
-  - [ ] assignment problem using hungarian matching
+  - [x] use hashing for visited state (called `tranposition table`) => using frozenset() instead of set() because of hassable problem
+  - [x] deadlock detection (simple/count area/freeze/...) => freeze deadlock
+  - [x] assignment problem using hungarian matching
   - [ ] restart searching to prevent stucking
 - gui
   - [x] gameplay design
@@ -15,8 +15,13 @@
   - [x] display fps, step count, weight pushed, elapsed time
   - [x] movement history
   - [x] simulate movement
+  - [x] window can be resized
+  - [ ] change app icon + custom caption with algo and map info
+  - [ ] minimap with zoom in/out
   - [ ] undo/redo movement handle
   - [ ] import new map (auto-generate output file for gui to work with)
+  - [ ] list of bgms
+  - [ ] sound effect for victory, movement and click action
 - report
   - [ ] each algo report (detailed explanation including imple process, heuristic functin, etc.) with imgs and diagrams
   - [ ] task assignment info

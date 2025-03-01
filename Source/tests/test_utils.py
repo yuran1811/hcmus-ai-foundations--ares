@@ -89,7 +89,7 @@ def test_load_input_data():
 def test_generate_output_content():
     assert (
         generate_output_content(
-            "BFS", 16, 695, 4321, 58.12, "12.56 MB", "uLulDrrRRRRRRurD"
+            "BFS", 16, 695, 4321, 0.05812, 13170114, "uLulDrrRRRRRRurD"
         )
-        == "BFS\nSteps: 16, Weight: 695, Node: 4321, Time (ms): 58.12, Memory: 12.56 MB\nuLulDrrRRRRRRurD"
+        == "BFS\nSteps: 16, Weight: 695, Node: 4321, Time: 58.12 ms, Memory: 12.56 MB\nuLulDrrRRRRRRurD"
     )
