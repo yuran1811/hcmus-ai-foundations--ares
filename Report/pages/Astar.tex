@@ -9,31 +9,25 @@
 
 \subsubsection{Pseudocode}
 \begin{algorithm}[H]
-	\caption{A* Search with heuristic (\textit{state, maxdepth, maxtimeout})}
-	\label{alg:ucs}
+	\caption{A* Search (\textit{start, goal, heuristic})}
+	\label{alg:astar}
 	\begin{algorithmic}[1]
-	\State priority queue $\gets$ starting position of Sokoban
-	\State cost $\gets$ cost of moves
-	\State Fix the Heuristics 
-	\While {queue is not empty}
-		\State Remove the highest priority element of queue
-		\If {Ares crates on target}
-			\State break
-		\Else
-			\If {Is deadlock or depth $\geq$ maxdepth or time $\geq$ maxtimeout}
-				\State pick next solution
-			\Else
-				\State Get valid moves for Sokoban
-				\ForAll {move}
-					\State cost $\gets$ cost of move with heuristics
-					\State Add cost to current move
-					\State Update queue with new cost and new state
-					\State Find Heuristics of new state
-				\EndFor
-			\EndIf
+	\State priority queue $\gets$ [(start, cost = 0, estimated total cost = heuristic(start))]
+	\While {priority queue is not empty}
+		\State (node, cost) $\gets$ dequeue(priority queue)
+		\If {node = goal}
+			\State return path
 		\EndIf
+		\ForAll {neighbor in valid moves}
+			\State new cost $\gets$ cost + move cost
+			\State estimated total cost $\gets$ new cost + heuristic(neighbor)
+			\If {neighbor not visited or new cost $<$ previous cost}
+				\State mark neighbor as visited
+				\State enqueue(priority queue, (neighbor, new cost, estimated total cost))
+			\EndIf
+		\EndFor
 	\EndWhile
-	\State \Return moves
+	\State return failure
 	\end{algorithmic}
 \end{algorithm}
 

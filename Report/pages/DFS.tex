@@ -9,26 +9,23 @@
 
 \subsubsection{Pseudocode}
 \begin{algorithm}[H]
-	\caption{Depth First Search (\textit{state, maxdepth, maxtimeout})}
+	\caption{Depth First Search (\textit{start, goal})}
 	\label{alg:dfs}
 	\begin{algorithmic}[1]
-	\State stack $\gets$ starting position of Sokoban
+	\State stack $\gets$ [start]
 	\While {stack is not empty}
-		\If {Ares crates on target}
-			\State break
-		\Else
-			\If {Is deadlock or depth $\geq$ maxdepth or time $\geq$ maxtimeout}
-				\State pick next solution
-			\Else
-				\State Get valid moves for Sokoban
-				\ForAll {move}
-					\State Find next state
-					\State Put it in stack
-				\EndFor
-			\EndIf
+		\State node $\gets$ pop(stack)
+		\If {node = goal}
+			\State return path
 		\EndIf
+		\ForAll {neighbor in valid moves}
+			\If {neighbor not visited}
+				\State mark neighbor as visited
+				\State push(stack, neighbor)
+			\EndIf
+		\EndFor
 	\EndWhile
-	\State \Return moves
+	\State return failure
 	\end{algorithmic}
 \end{algorithm}
 

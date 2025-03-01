@@ -9,28 +9,23 @@
 
 \subsubsection{Pseudocode}
 \begin{algorithm}[H]
-	\caption{Breadth First Search (\textit{state, maxdepth, maxtimeout})}
+	\caption{Breadth First Search (\textit{start, goal})}
 	\label{alg:bfs}
 	\begin{algorithmic}[1]
-	\State queue $\gets$ starting position of Sokoban
-	\State cost $\gets$ cost of moves
+	\State queue $\gets$ [start]
 	\While {queue is not empty}
-		\State Remove the first element of queue
-		\If {Ares crates on target}
-			\State break
-		\Else
-			\If {Is deadlock or depth $\geq$ maxdepth or time $\geq$ maxtimeout}
-				\State pick next solution
-			\Else
-				\State Get valid moves for Sokoban
-				\ForAll {move}
-					\State Find next state
-					\State Put it in queue with current cost + 1
-				\EndFor
-			\EndIf
+		\State node $\gets$ dequeue(queue)
+		\If {node = goal}
+			\State return path
 		\EndIf
+		\ForAll {neighbor in valid moves}
+			\If {neighbor not visited}
+				\State mark neighbor as visited
+				\State enqueue(queue, neighbor)
+			\EndIf
+		\EndFor
 	\EndWhile
-	\State \Return moves
+	\State return failure
 	\end{algorithmic}
 \end{algorithm}
 

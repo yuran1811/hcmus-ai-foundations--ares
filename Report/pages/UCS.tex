@@ -3,29 +3,24 @@
 
 \subsubsection{Pseudocode}
 \begin{algorithm}[H]
-	\caption{Uniform Cost Search (\textit{state, maxtimeout})}
+	\caption{Uniform Cost Search (\textit{start, goal})}
 	\label{alg:ucs}
 	\begin{algorithmic}[1]
-	\State priority queue $\gets$ starting position of Sokoban
-	\State cost $\gets$ cost of moves
-	\While {queue is not empty}
-		\State Remove the highest priority element of queue
-		\If {Ares crates on target}
-			\State break
-		\Else
-			\If {Is deadlock or time $\geq$ maxtimeout}
-				\State pick next solution
-			\Else
-				\State Get valid moves for Sokoban
-				\ForAll {move}
-					\State cost $\gets$ cost of move
-					\State Add cost to current move
-					\State Update queue with new cost and new state
-				\EndFor
-			\EndIf
+	\State priority queue $\gets$ [(start, cost = 0)]
+	\While {priority queue is not empty}
+		\State (node, cost) $\gets$ dequeue(priority queue)
+		\If {node = goal}
+			\State return path
 		\EndIf
+		\ForAll {neighbor in valid moves}
+			\State new cost $\gets$ cost + move cost
+			\If {neighbor not visited or new cost $<$ previous cost}
+				\State mark neighbor as visited
+				\State enqueue(priority queue, (neighbor, new cost))
+			\EndIf
+		\EndFor
 	\EndWhile
-	\State \Return moves
+	\State return failure
 	\end{algorithmic}
 \end{algorithm}
 
