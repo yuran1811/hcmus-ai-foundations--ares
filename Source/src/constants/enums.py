@@ -33,7 +33,7 @@ class Algorithm(Enum):
     DIJKSTRA = 5, "Dijkstra", "Dijkstra's Algorithm"
     SWARM = 6, "Swarm", "Swarm Algorithm"
     CONVERGENT_SWARM = 7, "Convergent Swarm", "Convergent Swarm Algorithm"
-    BIDIRECTIONAL_SWARM = 8, "Bidirectional Swarm", "Bidirectional Swarm Algorithm"
+    BIDIR_SWARM = 8, "Bidirectional Swarm", "Bidirectional Swarm Algorithm"
     ANT_COLONY = 9, "Ant Colony", "Ant Colony Optimization"
 
     @staticmethod
