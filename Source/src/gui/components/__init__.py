@@ -3,6 +3,7 @@ from .button import Button
 from .cursor import Cursor
 from .dialog import VictoryDialog
 from .game_info import GameInfo
+from .map_import import MapImport
 from .media import MediaController
 from .minimap import MiniMap
 from .select import SelectComponent
@@ -14,6 +15,7 @@ __all__ = [
     "Cursor",
     "VictoryDialog",
     "GameInfo",
+    "MapImport",
     "MediaController",
     "MiniMap",
     "SelectComponent",

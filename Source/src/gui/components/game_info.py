@@ -42,6 +42,9 @@ class GameInfo(WithFont):
             "fps": show_fps,
         }
 
+    def set_position(self, x: int, y: int):
+        self.pos = (max(574, x), y)
+
     def reset(self):
         self.steps = 0
         self.total_weight = 0

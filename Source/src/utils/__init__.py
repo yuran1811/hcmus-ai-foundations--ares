@@ -1,11 +1,12 @@
 from .args import parse_args, with_gui_arg, with_version_arg
-from .asset_loader import (
-    get_asset_path,
-    get_font,
-    get_frame_from_sprite,
-    load_character_animations,
-    load_spritesheet,
-)
+
+# from .asset_loader import (
+#     get_asset_path,
+#     get_font,
+#     get_frame_from_sprite,
+#     load_character_animations,
+#     load_spritesheet,
+# )
 from .base import (
     byte_convert,
     get_timestamp,
@@ -39,11 +40,11 @@ __all__ = [
     "with_gui_arg",
     "with_version_arg",
     #
-    "get_asset_path",
-    "get_font",
-    "get_frame_from_sprite",
-    "load_character_animations",
-    "load_spritesheet",
+    # "get_asset_path",
+    # "get_font",
+    # "get_frame_from_sprite",
+    # "load_character_animations",
+    # "load_spritesheet",
     #
     "byte_convert",
     "get_timestamp",
