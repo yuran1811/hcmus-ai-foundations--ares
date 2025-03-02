@@ -34,8 +34,8 @@ class SettingsState(State):
             scale_factor=3,
             on_play=lambda: self.game.bgms_controller.play(),
             on_pause=lambda: self.game.bgms_controller.stop(),
-            on_next=lambda: self.game.bgms_controller.next_track(),
-            on_prev=lambda: self.game.bgms_controller.prev_track(),
+            on_next=self.on_next_track,
+            on_prev=self.on_prev_track,
             on_mute=self.toggle_mute,
             on_unmute=self.toggle_unmute,
         )
@@ -146,3 +146,11 @@ class SettingsState(State):
         update_screen_sz((w, h))
 
         pg.display.set_mode((w, h))
+
+    def on_next_track(self):
+        self.game.bgms_controller.next_track()
+        self.bgms_selector.change_selected_idx(self.game.bgms_controller.current_index)
+
+    def on_prev_track(self):
+        self.game.bgms_controller.prev_track()
+        self.bgms_selector.change_selected_idx(self.game.bgms_controller.current_index)
