@@ -2,12 +2,10 @@ from collections.abc import Callable
 
 import pygame as pg
 
-from config import BG_COLOR, SCREEN_RES
-from gui.components.button import Button
-from gui.components.media import MediaController
-from gui.components.select import SelectComponent
+from config import BG_COLOR
+from gui.components import Button, MediaController, SelectComponent
 from gui.handlers.cursor import cursor_handler
-from utils import get_screen_sz, update_screen_sz
+from utils import get_screen_modes, get_screen_sz, update_screen_sz
 
 from .state import State
 
@@ -22,7 +20,7 @@ class SettingsState(State):
 
         self.game = game
 
-        self.resolutions = SCREEN_RES
+        self.resolutions = get_screen_modes()
 
         self.media_controller = MediaController(
             x=screen_size[0] // 2 - 50,
@@ -44,7 +42,9 @@ class SettingsState(State):
             screen_size[0] // 2 - 150,
             140,
             [f"{w}x{h}" for w, h in self.resolutions],
-            self.resolutions.index(screen_size),
+            self.resolutions.index(screen_size)
+            if screen_size in self.resolutions
+            else 0,
             label="Change Resolution",
             show_label=True,
             height=200,
@@ -59,6 +59,21 @@ class SettingsState(State):
             "Back",
             self.back,
         )
+
+    def responsive_handle(self):
+        super().responsive_handle()
+
+        screen_size = get_screen_sz()
+
+        self.resolution_selector.update_rect_topleft(screen_size[0] // 2 - 150, 140)
+        self.resolution_selector.change_selected_idx(
+            0
+            if screen_size not in self.resolutions
+            else self.resolutions.index(screen_size)
+        )
+
+        self.media_controller.update_rect_topleft(screen_size[0] // 2 - 50, 80)
+        self.back_button.set_position(screen_size[0] // 2 - 50, 10)
 
     def boot(self):
         pass
@@ -87,11 +102,6 @@ class SettingsState(State):
         self.resolution_selector.draw(screen)
         self.back_button.draw(screen)
 
-    def responsive_handle(self, screen_size: tuple[int, int]):
-        self.media_controller.update_rect_topleft(screen_size[0] // 2 - 50, 80)
-        self.resolution_selector.update_rect_topleft(screen_size[0] // 2 - 150, 140)
-        self.back_button.set_position(screen_size[0] // 2 - 50, 10)
-
     def handle_event(self, event: pg.event.Event):
         super().handle_event(event)
 
@@ -106,10 +116,11 @@ class SettingsState(State):
     def toggle_unmute(self):
         self.game.audio.mute("intro", False)
 
-    def change_resolution(
-        self, res: str, on_res_change: Callable[[tuple[int, int]], None] | None = None
-    ):
-        w, h = map(int, res.split("x"))
+    def change_resolution(self, res: int, on_res_change: Callable | None = None):
+        w, h = get_screen_modes(res)[0]
+
+        if isinstance(w, str) or isinstance(h, str):
+            return
 
         if on_res_change:
             on_res_change((w, h))

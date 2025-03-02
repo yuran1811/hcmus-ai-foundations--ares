@@ -1,25 +1,54 @@
-def dfs(matrix, start, end):
-    frontier = [(start, None)]
-    visited = {}
-    path = []
+from __future__ import annotations
 
-    while frontier:
-        current, predecessor = frontier.pop()
-        visited[current] = predecessor
+from constants.enums import Direction
+from utils import profile
 
-        while len(path) > 0 and path[-1] != visited[current]:
-            path.pop()
-        path.append(current)
+from .search import Point, ProblemState, Search, StonesPos
 
-        if current == end:
-            print("-----------------")
-            print(f"visited: {visited}")
-            print(f"path: {path}")
-            return visited, path
 
-        for neighbor in range(len(matrix[current]) - 1, -1, -1):
-            if matrix[current][neighbor] != 0 and neighbor not in visited:
-                frontier.append((neighbor, current))
+class DFS(Search):
+    def __init__(
+        self,
+        num_row: int,
+        num_col: int,
+        matrix: list[list[str]],
+        player_pos: Point,
+        stones_pos: StonesPos,
+        switches_pos: frozenset[Point],
+        use_deadlock: bool = True,
+    ):
+        super().__init__(
+            num_row,
+            num_col,
+            matrix,
+            player_pos,
+            stones_pos,
+            switches_pos,
+            use_deadlock=use_deadlock,
+        )
 
-    print(f"visited: {visited}")
-    return visited, path
+    @profile
+    def search(self):
+        frontier: list[ProblemState] = [self.initial_state]
+
+        closed: set[ProblemState] = set()
+        closed.add(self.initial_state)
+
+        expanded_count = 0
+        while frontier:
+            expanded_count += 1
+
+            current_state = frontier.pop()
+            if current_state.is_final(self.switches_pos):
+                path, w = self.construct_path(current_state)
+                return path, w, expanded_count, len(closed)
+
+            for dir in Direction:
+                if self.can_go(current_state, dir):
+                    new_state = self.go(current_state, dir)
+
+                    if new_state not in closed:
+                        closed.add(new_state)
+                        frontier.append(new_state)
+
+        return "Impossible", 0, expanded_count, len(closed)

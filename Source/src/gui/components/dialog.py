@@ -3,7 +3,7 @@ from collections.abc import Callable
 
 import pygame as pg
 
-from utils.config import get_screen_sz
+from utils import get_screen_sz
 
 from .button import Button
 from .decorators import WithFont
@@ -20,6 +20,8 @@ class VictoryDialog(WithFont):
 
         screen_size = get_screen_sz()
 
+        self.is_hide = True
+
         self.rect = pg.Rect(0, 0, 400, 200)
         self.rect.center = (screen_size[0] // 2, screen_size[1] // 2)
 
@@ -30,7 +32,7 @@ class VictoryDialog(WithFont):
                 120,
                 40,
                 "Replay",
-                on_replay,
+                self.with_hide_action(on_replay),
             )
             if on_replay
             else None
@@ -41,7 +43,7 @@ class VictoryDialog(WithFont):
             80,
             40,
             "Next",
-            on_next_map,
+            self.with_hide_action(on_next_map),
         )
         self.buttons = {
             "replay": self.replay_button,
@@ -66,6 +68,26 @@ class VictoryDialog(WithFont):
         self.confetti_fire = False
         self.confetti = []
         self.max_confetti_shots = 5
+
+    def show(self):
+        self.is_hide = False
+
+    def hide(self):
+        self.is_hide = True
+
+        if self.replay_button:
+            self.replay_button.clicked = False
+            self.replay_button.hovered = False
+        self.next_button.clicked = False
+        self.next_button.hovered = False
+
+    def with_hide_action(self, _: Callable | None = None):
+        def f():
+            self.hide()
+            if _:
+                _()
+
+        return f
 
     def toggle_confetti(self, value: bool | None = None):
         self.confetti_fire = value if value is not None else not self.confetti_fire
@@ -135,6 +157,9 @@ class VictoryDialog(WithFont):
                 screen.blit(flipped_surf, flipped_surf.get_rect(center=p["pos"]))
 
     def update(self, dt: float):
+        if self.is_hide:
+            return
+
         self.update_confetti(dt)
         if (
             self.confetti_fire
@@ -148,6 +173,9 @@ class VictoryDialog(WithFont):
         self.next_button.update()
 
     def draw(self, screen: pg.Surface):
+        if self.is_hide:
+            return
+
         screen_size = get_screen_sz()
 
         # Dark background overlay
@@ -166,5 +194,8 @@ class VictoryDialog(WithFont):
         self.next_button.draw(screen)
 
     def handle_event(self, event: pg.event.Event):
+        if self.is_hide:
+            return
+
         self.replay_button.handle_event(event) if self.replay_button else None
         self.next_button.handle_event(event)

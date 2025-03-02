@@ -22,6 +22,7 @@ class MediaController(WithLabel):
         show_play: bool = False,
         show_speed: bool = False,
         show_mute: bool = False,
+        show_zoom: bool = False,
         is_playing: bool = False,
         is_muted: bool = False,
         orientation=Orientation.HORIZONTAL,
@@ -39,6 +40,8 @@ class MediaController(WithLabel):
         on_mute: Callable | None = None,
         on_loop: Callable | None = None,
         on_reset: Callable | None = None,
+        on_zoom_in: Callable | None = None,
+        on_zoom_out: Callable | None = None,
     ):
         super().__init__(label=label)
 
@@ -46,6 +49,7 @@ class MediaController(WithLabel):
         self.show_play = show_play
         self.show_speed = show_speed
         self.show_mute = show_mute
+        self.show_zoom = show_zoom
         self.orientation = orientation
 
         self.sheet = pg.image.load(
@@ -101,6 +105,8 @@ class MediaController(WithLabel):
             ),
             "loop": self.create_controller_item(54, on_loop),
             "reset": self.create_controller_item(23, on_reset),
+            "zoom_in": self.create_controller_item(30, on_zoom_in),
+            "zoom_out": self.create_controller_item(31, on_zoom_out),
         }
         self.components: dict[str, Any] = {}
 
@@ -133,6 +139,7 @@ class MediaController(WithLabel):
                 or (name.startswith("speed") and not self.show_speed)
                 or (name == "unmute" and not self.show_mute)
                 or (name == "play_pause" and not self.show_play)
+                or ((name == "zoom_in" or name == "zoom_out") and not self.show_zoom)
             ):
                 continue
 
@@ -227,13 +234,12 @@ class MediaController(WithLabel):
             else:
                 self.components[name].rect.topleft = (current_pos[0], current_pos[1])
 
-            if name.startswith("speed") and not self.show_speed:
-                continue
-
-            if name == "unmute" and not self.show_mute:
-                continue
-
-            if name == "play_pause" and not self.show_play:
+            if (
+                (name.startswith("speed") and not self.show_speed)
+                or (name == "unmute" and not self.show_mute)
+                or (name == "play_pause" and not self.show_play)
+                or ((name == "zoom_in" or name == "zoom_out") and not self.show_zoom)
+            ):
                 continue
 
             self.components[name].draw(screen)

@@ -12,6 +12,10 @@ def dev():
     Game().run()
 
 
+def solve():
+    pass
+
+
 def main() -> int:
     __toml = get_project_toml_data()
 

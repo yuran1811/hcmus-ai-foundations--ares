@@ -8,11 +8,14 @@ from config import BG_COLOR, GRID_SIZE
 from constants.enums import Algorithm, Direction, GameStateType, Orientation
 from entities.map import Map
 from entities.player import Player
-from gui.components.button import Button
-from gui.components.dialog import VictoryDialog
-from gui.components.game_info import GameInfo
-from gui.components.media import MediaController
-from gui.components.select import SelectComponent
+from gui.components import (
+    Button,
+    GameInfo,
+    MediaController,
+    MiniMap,
+    SelectComponent,
+    VictoryDialog,
+)
 from gui.handlers.cursor import cursor_handler
 from utils import (
     get_input_filenames,
@@ -68,23 +71,18 @@ class GameState(State):
         self.undo_history: list[MoveData] = []
         self.redo_history: list[MoveData] = []
 
-        self.dialogs = {
-            "victory": VictoryDialog(
-                on_next_map=self.on_next_map, on_replay=self.reload_map
-            ),
-        }
-
         self.controllers = MediaController(
             10,
             60,
             show_play=True,
-            show_speed=False,
+            # show_speed=True,
+            show_zoom=True,
             orientation=Orientation.VERTICAL,
             scale_factor=4,
             on_play=lambda: self.toggle_simulation(True),
             on_pause=lambda: self.toggle_simulation(False),
-            on_speed_up=lambda _: self.on_speed_change(_),
-            on_speed_down=lambda _: self.on_speed_change(-_),
+            # on_speed_up=lambda _: self.on_speed_change(_),
+            # on_speed_down=lambda _: self.on_speed_change(-_),
             on_prev=lambda: self.load_map(
                 from_index=(self.current_map_index - 1 + input_filenames_sz)
                 % input_filenames_sz
@@ -95,6 +93,8 @@ class GameState(State):
             # on_backward=self.undo_move,
             # on_forward=self.redo_move,
             on_reset=self.reload_map,
+            on_zoom_in=lambda: self.zoom_minimap(0.1),
+            on_zoom_out=lambda: self.zoom_minimap(-0.1),
         )
 
         self.selects = {
@@ -103,6 +103,8 @@ class GameState(State):
                 10,
                 Algorithm.get_labels(),
                 -1,
+                placeholder="Select algo",
+                placeholder_empty="No algo found",
                 height=240,
                 on_select=lambda _: self.on_algo_select(Algorithm.get_labels()[_]),
             ),
@@ -124,6 +126,12 @@ class GameState(State):
                 40,
                 "Back",
                 self.back,
+            ),
+        }
+
+        self.dialogs = {
+            "victory": VictoryDialog(
+                on_next_map=self.on_next_map, on_replay=self.reload_map
             ),
         }
 
@@ -152,6 +160,8 @@ class GameState(State):
 
         self.debug_mode = False
 >>>>>>> 13d1998856ea5592dace2d4413bbda0213d6835d
+
+        self.minimap = MiniMap(self, 200, 150)
 
     def boot(self):
         pass
@@ -209,19 +219,22 @@ class GameState(State):
         self.camera.y = max(0, min(self.camera.y, self.map_size.height - SCREEN_HEIGHT))
 >>>>>>> 13d1998856ea5592dace2d4413bbda0213d6835d
 
+        self.minimap.zoom_level = max(0.1, min(1.0, self.minimap.zoom_level))
+
     def draw(self, screen: pg.Surface):
         screen.fill(BG_COLOR)
 
 <<<<<<< HEAD
         self.map.draw(screen, self.camera, self.player.pixel_pos)
         self.player.draw(screen, self.camera)
+
         self.controllers.draw(screen)
         [
             _.draw(screen)
             for _ in list(self.selects.values()) + list(self.buttons.values())
         ]
-
         self.game_info.draw(screen)
+        self.minimap.draw(screen)
 
         if self.state_type == GameStateType.VICTORY:
             self.dialogs["victory"].draw(screen)
@@ -232,21 +245,16 @@ class GameState(State):
     def draw_debug(self, screen: pg.Surface):
         self.player.draw_debug(screen, self.camera)
 
-    def responsive_handle(self, screen_size: tuple[int, int]):
-        pass
-
     def handle_event(self, event: pg.event.Event):
         super().handle_event(event)
 
-        if self.state_type == GameStateType.VICTORY:
-            self.dialogs["victory"].handle_event(event)
-        elif self.state_type == GameStateType.PLAYING:
-            if event.type == pg.KEYDOWN:
-                if event.key == pg.K_F1:
-                    self.debug_mode = not self.debug_mode
+        if event.type == pg.KEYDOWN:
+            if event.key == pg.K_F1:
+                self.debug_mode = not self.debug_mode
 
+        self.dialogs["victory"].handle_event(event)
+        self.minimap.handle_event(event)
         self.player.handle_event(event, on_move=self.on_player_move)
-
         self.controllers.handle_event(event)
         [
             _.handle_event(event)
@@ -272,6 +280,8 @@ class GameState(State):
         self.current_map_index = from_index
         self.selects["map"].change_selected_idx(self.current_map_index)
 
+        self.selects["algo"].update_options(list(self.map_sol.keys()))
+
     def load_map_state(self, from_index: int = 1):
         screen_size = get_screen_sz()
         weights, map_data = load_input_data(from_index=from_index)
@@ -294,6 +304,9 @@ class GameState(State):
         self.load_map_state(from_index=self.current_map_index)
 
     def update_camera(self):
+        if self.minimap.dragging:
+            return
+
         screen_size = get_screen_sz()
         half_screen_w = screen_size[0] // 2
         half_screen_h = screen_size[1] // 2
@@ -312,13 +325,20 @@ class GameState(State):
     def win_handler(self):
         self.game_info.stop_timer()
         self.state_type = GameStateType.VICTORY
+
+        self.dialogs["victory"].show()
         self.dialogs["victory"].toggle_confetti(True)
+
+    def zoom_minimap(self, delta: float):
+        self.minimap.zoom_level = max(0.1, min(1.0, self.minimap.zoom_level + delta))
+        self.minimap.constrain_content()
 
     def on_next_map(self):
         self.load_map(from_index=self.current_map_index + 1)
 
-        self.dialogs["victory"].toggle_confetti(False)
         self.state_type = GameStateType.PLAYING
+
+        self.dialogs["victory"].toggle_confetti(False)
 
     def on_speed_change(self, speed: int):
         self.controllers.state["speed"] = get_speed(abs(speed), speed > 0)

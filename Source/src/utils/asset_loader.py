@@ -228,7 +228,7 @@ def draw_tile_map(
 >>>>>>> 13d1998856ea5592dace2d4413bbda0213d6835d
 
 
-def get_asset_path(*args):
+def get_asset_path(*args: str):
     return os.path.join(ASSETS_PATH, *args)
 <<<<<<< HEAD
 
