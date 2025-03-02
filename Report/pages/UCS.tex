@@ -6,15 +6,15 @@
 	\caption{Uniform Cost Search (\textit{start, goal})}
 	\label{alg:ucs}
 	\begin{algorithmic}[1]
-	\State priority queue $\gets$ [(start, cost = 0)]
+	\State priority queue \(\gets\) [(start, cost = 0)]
 	\While {priority queue is not empty}
-		\State (node, cost) $\gets$ dequeue(priority queue)
+		\State (node, cost) \(\gets\) dequeue(priority queue)
 		\If {node = goal}
 			\State return path
 		\EndIf
 		\ForAll {neighbor in valid moves}
-			\State new cost $\gets$ cost + move cost
-			\If {neighbor not visited or new cost $<$ previous cost}
+			\State new cost \(\gets\) cost + move cost
+			\If {neighbor not visited or new cost \(<\) previous cost}
 				\State mark neighbor as visited
 				\State enqueue(priority queue, (neighbor, new cost))
 			\EndIf

@@ -9,12 +9,11 @@
 
 \subsubsection{Pseudocode}
 \begin{algorithm}[H]
-	\caption{Depth First Search (\textit{start, goal})}
-	\label{alg:dfs}
+	\caption{Depth First Search (\textit{start, goal})}\label{alg:dfs}
 	\begin{algorithmic}[1]
-	\State stack $\gets$ [start]
+	\State stack \(\gets\) [start]
 	\While {stack is not empty}
-		\State node $\gets$ pop(stack)
+		\State node \(\gets\) pop(stack)
 		\If {node = goal}
 			\State return path
 		\EndIf

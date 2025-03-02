@@ -4,37 +4,33 @@
 \begin{figure}[H]
 	\centering
 	\includegraphics[width=0.8\textwidth]{./imgs/bfs.png}
-	\caption{Breadth First Search}
+	\caption{Breadth First Search (BFS)}
 \end{figure}
 
 \subsubsection{Pseudocode}
 \begin{algorithm}[H]
-	\caption{Breadth First Search (\textit{start, goal})}
-	\label{alg:bfs}
+	\caption{Breadth First Search (\textit{start, goal})}\label{alg:bfs}
 	\begin{algorithmic}[1]
-	\State queue $\gets$ [start]
-	\While {queue is not empty}
-		\State node $\gets$ dequeue(queue)
+		\State queue \(gets\) [start]
+		\While {queue is not empty}
+		\State node \(gets\) dequeue(queue)
 		\If {node = goal}
-			\State return path
+		\State return path
 		\EndIf
 		\ForAll {neighbor in valid moves}
-			\If {neighbor not visited}
-				\State mark neighbor as visited
-				\State enqueue(queue, neighbor)
-			\EndIf
+		\If {neighbor not visited}
+		\State mark neighbor as visited
+		\State enqueue(queue, neighbor)
+		\EndIf
 		\EndFor
-	\EndWhile
-	\State return failure
+		\EndWhile
+		\State return failure
 	\end{algorithmic}
 \end{algorithm}
 
 \subsubsection{Implementation}
 
 \subsubsection{Time and Space Complexity}
-\textbf{Time Complexity:} $O(V + E)$, where $V$ is the number of vertices and $E$ is the number of edges. Each node and edge is processed once.
+\textbf{Time Complexity:} \(O(V + E)\), where \(V\) is the number of vertices and \(E\) is the number of edges. Each node and edge is processed once.
 
-\textbf{Space Complexity:} $O(V)$ in the worst case, as the queue stores all nodes at the widest level of the graph.
-
-
-
+\textbf{Space Complexity:} \(O(V)\) in the worst case, as the queue stores all nodes at the widest level of the graph.

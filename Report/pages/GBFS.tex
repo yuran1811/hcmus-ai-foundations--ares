@@ -13,9 +13,9 @@
 	\caption{Greedy Best-First Search (\textit{start, goal, heuristic})}
 	\label{alg:gbfs}
 	\begin{algorithmic}[1]
-	\State priority queue $\gets$ [(start, heuristic(start))]
+	\State priority queue \(\gets\) [(start, heuristic(start))]
 	\While {priority queue is not empty}
-		\State node $\gets$ dequeue(priority queue)
+		\State node \(\gets\) dequeue(priority queue)
 		\If {node = goal}
 			\State return path
 		\EndIf
