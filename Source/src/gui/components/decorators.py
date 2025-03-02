@@ -1,11 +1,11 @@
 import pygame as pg
 
-from utils import get_font
+from utils.asset_loader import get_font
 
 
 class WithFont:
-    def __init__(self, *, font_size: int = 24):
-        self.font = get_font(size=font_size)
+    def __init__(self, *, font_size=24, font_name="pixelify"):
+        self.font = get_font(size=font_size, font_name=font_name)
         self.font_size = font_size
 
 

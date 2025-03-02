@@ -1,3 +1,4 @@
+from .bgm_controller import BGMController
 from .button import Button
 from .cursor import Cursor
 from .dialog import VictoryDialog
@@ -8,6 +9,7 @@ from .select import SelectComponent
 from .text import Text
 
 __all__ = [
+    "BGMController",
     "Button",
     "Cursor",
     "VictoryDialog",
