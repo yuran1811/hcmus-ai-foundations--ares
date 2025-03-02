@@ -1,7 +1,7 @@
 # Todos
 
 - [x] export `requirements.txt`
-- [ ] map level indexing
+- [x] map level indexing
 - [ ] generate outputs
 
 ## Assessment
@@ -40,18 +40,19 @@
 - [x] window can be freely resized
 - [x] minimap with zoom in/out + moving screen
 - [x] change speed of simulation
+- [x] import new map (auto-generate output file for gui to work with)
+- [x] bgms controller
 - [ ] change app icon + custom caption with algo and map info
-- [ ] import new map (auto-generate output file for gui to work with)
-- [ ] list of bgms
 - [ ] sound effect for victory, movement and click action
 - [ ] undo/redo movement handle
 
 ## Report
 
+- [x] Member information (Student ID, full name, etc.)
+- [x] task assignment info (with assigned to, completion rate)
+- [x] self-evaluation of the project requirements
 - [ ] each algo report (detailed explanation including imple process, heuristic functin, etc.) with imgs and diagrams
-- [ ] task assignment info
-- [ ] self-evaluation of the project requirements
-- [ ] test case description and experiment results (mem usage, time complexity, etc.) (use tables)
+- [ ] test case description and experiment results (mem usage, time complexity, etc.) (Highlight challenges and compare the overall behavior of your algorithms.) (use tables)
 - benchmark using chart and graphs (with/without opt like deadlock, hungarian) => using `matplotlib.pyplot`
   - [ ] mem
   - [ ] time
