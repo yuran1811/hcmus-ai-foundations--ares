@@ -3,7 +3,8 @@ from __future__ import annotations
 import numpy as np
 from scipy.optimize import linear_sum_assignment
 
-from utils import manhattan, profile
+from utils.base import manhattan
+from utils.metrics import profile
 
 from .search import Point, ProblemState, Search, StonesPos, StonesPosFreeze
 
