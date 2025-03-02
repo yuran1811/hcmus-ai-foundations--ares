@@ -1,11 +1,11 @@
 import pygame as pg
 
 from constants.paths import UI_PATH
-from utils import get_frame_from_sprite
+from utils.asset_loader import get_frame_from_sprite
 
 
 class Cursor:
-    def __init__(self, *, scale_factor: float = 1.0):
+    def __init__(self, *, scale_factor: int = 1):
         # Load sprite sheet
         self.sheet = pg.image.load(
             f"{UI_PATH}/cursors/micro-icon-pack/Sprite Sheet (10x10).png"

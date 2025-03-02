@@ -1,6 +1,5 @@
 import os
 
-import pygame as pg
 import tomllib
 
 from config import SCREEN_SIZE
@@ -46,7 +45,9 @@ def update_screen_sz(size: tuple[int, int]):
 
 
 def get_screen_modes(idx: int | None = None):
-    default_modes = pg.display.list_modes()[:-2]
-    modes = [("w", "h"), (768, 456)] + pg.display.get_desktop_sizes() + default_modes
+    from pygame.display import get_desktop_sizes, list_modes
+
+    default_modes = list_modes()[:-2]
+    modes = [("w", "h"), (768, 456)] + get_desktop_sizes() + default_modes
 
     return modes if idx is None else [modes[idx]]

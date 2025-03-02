@@ -5,7 +5,8 @@ import pygame as pg
 
 from constants.enums import Orientation
 from constants.paths import UI_PATH
-from utils import get_frame_from_sprite, get_speed
+from utils import get_speed
+from utils.asset_loader import get_frame_from_sprite
 
 from .button import Button
 from .decorators import WithLabel
@@ -14,8 +15,8 @@ from .decorators import WithLabel
 class MediaController(WithLabel):
     def __init__(
         self,
-        x: float = 0.0,
-        y: float = 0.0,
+        x: int = 0,
+        y: int = 0,
         *,
         label="",
         show_label: bool = False,
@@ -26,7 +27,7 @@ class MediaController(WithLabel):
         is_playing: bool = False,
         is_muted: bool = False,
         orientation=Orientation.HORIZONTAL,
-        scale_factor: float = 1.0,
+        scale_factor: int = 1,
         on_home: Callable | None = None,
         on_backward: Callable | None = None,
         on_forward: Callable | None = None,
@@ -120,7 +121,7 @@ class MediaController(WithLabel):
             "on_click": callback,
         }
 
-    def init_components(self, x: float = 0.0, y: float = 0.0):
+    def init_components(self, x: int = 0, y: int = 0):
         count: int = 0
         base_x = x
         base_y = y
@@ -150,8 +151,8 @@ class MediaController(WithLabel):
                 pos = (base_x, base_y + count * (self.frame_size + self.gap))
 
             self.components[name] = Button(
-                pos[0],
-                pos[1],
+                int(pos[0]),
+                int(pos[1]),
                 self.frame_size,
                 self.frame_size,
                 "",

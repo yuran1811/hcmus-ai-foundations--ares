@@ -4,7 +4,7 @@ import pygame as pg
 
 from config import GRID_SIZE, MOVEMENT_SPEED
 from constants.enums import Direction
-from utils import load_character_animations
+from utils.asset_loader import load_character_animations
 
 from .map import Map
 

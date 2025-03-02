@@ -39,7 +39,7 @@
 - [x] simulate movement
 - [x] window can be freely resized
 - [x] minimap with zoom in/out + moving screen
-- [ ] change speed of simulation
+- [x] change speed of simulation
 - [ ] change app icon + custom caption with algo and map info
 - [ ] import new map (auto-generate output file for gui to work with)
 - [ ] list of bgms
