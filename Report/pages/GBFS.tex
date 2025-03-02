@@ -13,20 +13,20 @@
 	\caption{Greedy Best-First Search (\textit{start, goal, heuristic})}
 	\label{alg:gbfs}
 	\begin{algorithmic}[1]
-	\State priority queue $\gets$ [(start, heuristic(start))]
-	\While {priority queue is not empty}
-		\State node $\gets$ dequeue(priority queue)
+		\State priority queue \(\gets\) [(start, heuristic(start))]
+		\While {priority queue is not empty}
+		\State node \(\gets\) dequeue(priority queue)
 		\If {node = goal}
-			\State return path
+		\State return path
 		\EndIf
 		\ForAll {neighbor in valid moves}
-			\If {neighbor not visited}
-				\State mark neighbor as visited
-				\State enqueue(priority queue, (neighbor, heuristic(neighbor)))
-			\EndIf
+		\If {neighbor not visited}
+		\State mark neighbor as visited
+		\State enqueue(priority queue, (neighbor, heuristic(neighbor)))
+		\EndIf
 		\EndFor
-	\EndWhile
-	\State return failure
+		\EndWhile
+		\State return failure
 	\end{algorithmic}
 \end{algorithm}
 

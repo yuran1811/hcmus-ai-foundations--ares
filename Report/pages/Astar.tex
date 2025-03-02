@@ -12,16 +12,16 @@
 	\caption{A* Search (\textit{start, goal, heuristic})}
 	\label{alg:astar}
 	\begin{algorithmic}[1]
-	\State priority queue $\gets$ [(start, cost = 0, estimated total cost = heuristic(start))]
+	\State priority queue \(\gets\) [(start, cost = 0, estimated total cost = heuristic(start))]
 	\While {priority queue is not empty}
-		\State (node, cost) $\gets$ dequeue(priority queue)
+		\State (node, cost) \(\gets\) dequeue(priority queue)
 		\If {node = goal}
 			\State return path
 		\EndIf
 		\ForAll {neighbor in valid moves}
-			\State new cost $\gets$ cost + move cost
-			\State estimated total cost $\gets$ new cost + heuristic(neighbor)
-			\If {neighbor not visited or new cost $<$ previous cost}
+			\State new cost \(\gets\) cost + move cost
+			\State estimated total cost \(\gets\) new cost + heuristic(neighbor)
+			\If {neighbor not visited or new cost \(<\) previous cost}
 				\State mark neighbor as visited
 				\State enqueue(priority queue, (neighbor, new cost, estimated total cost))
 			\EndIf
