@@ -29,8 +29,26 @@
 \end{algorithm}
 
 \subsubsection{Implementation}
+\begin{itemize}
+    \item \textbf{\_\_init\_\_(...)}  
+    Initializes the BFS algorithm with grid dimensions, matrix representation, initial player position, stone positions, and switch positions. It also includes an optional deadlock detection flag.
+
+    \item \textbf{search()}  
+    Implements the BFS algorithm using a queue (FIFO). The search begins with the initial state in the frontier. The function explores states by dequeuing from the front, checking for the goal condition, and enqueuing valid new states.
+
+    \item \textbf{can\_go(current\_state, dir)}  
+    Checks whether the player can move in a given direction from the current state without encountering obstacles.
+
+    \item \textbf{go(current\_state, dir)}  
+    Generates a new state by moving the player in the specified direction, updating the relevant positions.
+
+    \item \textbf{construct\_path(final\_state)}  
+    Reconstructs the sequence of moves leading to the goal state by backtracking from the final state.
+
+\end{itemize}
+
 
 \subsubsection{Time and Space Complexity}
-\textbf{Time Complexity:} \(O(V + E)\), where \(V\) is the number of vertices and \(E\) is the number of edges. Each node and edge is processed once.
+\textbf{Time Complexity:} \( O(b^d) \), where \( b \) is the branching factor and \( d \) is the depth of the shallowest solution. It explores all nodes at the current depth before moving deeper.
 
-\textbf{Space Complexity:} \(O(V)\) in the worst case, as the queue stores all nodes at the widest level of the graph.
+\textbf{Space Complexity:} \( O(b^d) \), as it stores all nodes at the current depth in memory.

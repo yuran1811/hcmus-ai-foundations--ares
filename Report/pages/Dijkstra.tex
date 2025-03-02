@@ -25,6 +25,27 @@
 \end{algorithm}
 
 \subsubsection{Implementation}
+\begin{itemize}
+    \item \textbf{\_\_init\_\_(...)}  
+    Initializes the Dijkstra search algorithm with grid dimensions, matrix representation, initial player position, stone positions, and switch positions. It also includes an option for deadlock detection. The initial state's cost \( g \) is set to zero.
+
+    \item \textbf{search()}  
+    Implements Dijkstra’s algorithm using a priority queue (min-heap). The function explores states based on the lowest accumulated cost \( g \). It expands nodes by generating successors, updating costs, and maintaining a hash table for efficient state lookup.
+
+    \item \textbf{handle(new\_state, closed, frontier, state\_hash\_table)}  
+    Manages newly generated states, checking if they should be added to the frontier or updated in the hash table based on their cost values.
+
+    \item \textbf{can\_go(current\_state, dir)}  
+    Checks whether the player can move in a given direction from the current state without encountering obstacles.
+
+    \item \textbf{go(current\_state, dir)}  
+    Generates a new state by moving the player in the specified direction, updating positions, and recalculating cost values.
+
+    \item \textbf{construct\_path(final\_state)}  
+    Reconstructs the sequence of moves leading to the goal state by backtracking from the final state.
+\end{itemize}
 
 \subsubsection{Time and Space Complexity}
+\textbf{Time Complexity:} \( O((V + E) \log V) \), where \( V \) is the number of vertices and \( E \) is the number of edges. Using a priority queue (min-heap) allows efficient updates.
 
+\textbf{Space Complexity:} \( O(V + E) \), as it stores all nodes and edges in the graph.
