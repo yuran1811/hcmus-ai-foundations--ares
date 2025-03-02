@@ -6,4 +6,3 @@
 \noindent Hashing is a well known pruning method used to tune the algorithm to perform better. It follows the logic that decision which leads to the states that are already visited are considered as suboptimal. So all the states are stored in the hash table and at each point, a comparison is made between the current state and the stored state. If there is a match, the same action corresponding to the one in the hashing table is avoided
 \subsubsection{Tunnel Macros}
 \noindent Tunnel Macros is a intelligent pruning technique which is employed to reduce the state space exploration. Very often, the Sokoban game consist of the tunnels where the stones are required to be pushed. In such cases, the action is not going to change till the tunnel end is reached. Therefore, if we can cut down the actions in the tunnels by identifying them, the time required to solve the level decreases exponentially.
-
