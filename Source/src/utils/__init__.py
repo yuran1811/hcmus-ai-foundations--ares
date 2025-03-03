@@ -24,6 +24,7 @@ from .config import (
     update_screen_sz,
 )
 from .data import (
+    export_output_data,
     extract_data_from_file,
     get_input_filenames,
     get_output_filenames,
@@ -60,6 +61,7 @@ __all__ = [
     "get_screen_sz",
     "update_screen_sz",
     #
+    "export_output_data",
     "extract_data_from_file",
     "get_input_filenames",
     "get_output_filenames",

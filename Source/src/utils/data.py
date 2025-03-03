@@ -77,6 +77,14 @@ def normalize_output_data(raw_data: list[str]):
     return sols
 
 
+def export_output_data(data: str, filename: str):
+    with open(
+        os.path.join(DATA_DIR, "output", filename),
+        "w",
+    ) as file:
+        file.write(data)
+
+
 def get_input_filenames():
     return [f for f in os.listdir(INPUT_DIR) if f.startswith("input-")]
 
