@@ -1,0 +1,9 @@
+UCS
+Steps: 97, Weight: 32, Node: 1726, Time: 82.71 ms, Memory: 1.05 MB
+llDDDDDDldddrruuLuuuuuuurrdLulDDDDDDlllddrrUdlluurRdddrruuLUUUUUUluRddddddlllddrrUdlluurRdrUUUUUU
+A*
+Steps: 97, Weight: 32, Node: 1605, Time: 191.13 ms, Memory: 992.39 KB
+llDDDDDDldddrruuLuuuuuuurrdLulDDDDDDlllddrrUdlluurRdddrruuLUUUUUUluRddddddlllddrrUdlluurRdrUUUUUU
+GBFS
+Steps: 99, Weight: 34, Node: 790, Time: 91.21 ms, Memory: 455.05 KB
+llDDDDDDldddrruuLrddlluUruuuuuuurrdLulDDDDDDLddlluuRRdddrruuLUUUUUUluRdddddddrddlluUdlluurRdrUUUUUU

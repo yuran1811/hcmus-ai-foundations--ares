@@ -1,0 +1,21 @@
+BFS
+Steps: 7, Weight: 3, Node: 65, Time: 5.10 ms, Memory: 43.76 KB
+llldRRR
+DFS
+Steps: 15, Weight: 3, Node: 159, Time: 10.88 ms, Memory: 68.03 KB
+rrrddlllllluRRR
+UCS
+Steps: 7, Weight: 3, Node: 66, Time: 4.66 ms, Memory: 56.55 KB
+llldRRR
+A*
+Steps: 7, Weight: 3, Node: 18, Time: 3.39 ms, Memory: 20.45 KB
+llldRRR
+GBFS
+Steps: 7, Weight: 3, Node: 22, Time: 4.39 ms, Memory: 21.70 KB
+llldRRR
+Dijkstra
+Steps: 7, Weight: 3, Node: 415, Time: 27.11 ms, Memory: 233.16 KB
+llldRRR
+Swarm
+Steps: 7, Weight: 3, Node: 28, Time: 7.89 ms, Memory: 26.58 KB
+llldRRR

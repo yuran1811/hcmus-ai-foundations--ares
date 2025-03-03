@@ -1,0 +1,6 @@
+A*
+Steps: 211, Weight: 82, Node: 213984, Time: 47.63 s, Memory: 130.17 MB
+uluurDrrddrUrrRRRuRRRurDllllddrUluRRRurrdLulDlldllllllluurDldRRRRRRdrUluRRRurrdLLLLulDrdLLLdlUlllulllddrUluRRRurDldRRRRRRdrUluRRRurrdLLLLulDrrrrrddlUruLLLLdLLLLLLdlUrrrrrrruulDrrrrddlUruLLLdLLLLLLuLLLrrrdrrruulD
+GBFS
+Steps: 251, Weight: 86, Node: 109944, Time: 26.54 s, Memory: 65.95 MB
+uluurDrrddrUrrdrUrruRRRurrdLulDllldllluurDldRRRdrUluRRRurrdLLLLulDrdLLLdlUllluurDldRRRRuulDrdRRdrUllldlUlllulllddrUluRRRurDldRRRRuulDrdLLLdlUruLLLrrdrrrrRRuRRRurDllllddrUluRRRurrdLLLLrrrrddlUruulldllulDrdLLLLLLrrrrrurrrurrdLLLLulDrdLLLrrurrrrddlUruLLL

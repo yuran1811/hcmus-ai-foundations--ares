@@ -1,0 +1,21 @@
+BFS
+Steps: 30, Weight: 14, Node: 1527, Time: 160.23 ms, Memory: 781.69 KB
+DRdRRUddrUUdlllulldRRRluRRDldR
+DFS
+Steps: 50, Weight: 20, Node: 179, Time: 13.54 ms, Memory: 84.56 KB
+DRdRRllulldRRRdrrULrUdlLrUrddlluLuRRlllldRRRurDldR
+UCS
+Steps: 30, Weight: 14, Node: 1629, Time: 117.05 ms, Memory: 992.17 KB
+DRdRRUddrUUldlluRllldRRRuRDldR
+A*
+Steps: 30, Weight: 14, Node: 950, Time: 202.05 ms, Memory: 631.61 KB
+DRdRRUddrUUldlluRllldRRRuRDldR
+GBFS
+Steps: 32, Weight: 14, Node: 55, Time: 10.58 ms, Memory: 49.31 KB
+DRdRRUrDllluRRdrUllllldRRRdrUluR
+Dijkstra
+Steps: 30, Weight: 14, Node: 2176, Time: 153.32 ms, Memory: 1.21 MB
+DRdRRUddrUUldlluRllldRRRuRDldR
+Swarm
+Steps: 30, Weight: 14, Node: 3553, Time: 1.16 s, Memory: 2.58 MB
+DRdRRdrUUdlUdllulldRRRluRRDldR

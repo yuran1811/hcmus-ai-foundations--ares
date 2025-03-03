@@ -1,0 +1,9 @@
+UCS
+Steps: 34, Weight: 7, Node: 153, Time: 7.32 ms, Memory: 82.88 KB
+rDlddrrruuLLrrddllUdrruulullDRddlU
+A*
+Steps: 34, Weight: 7, Node: 141, Time: 15.19 ms, Memory: 81.11 KB
+rDlddrrruuLLrrddllUdrruulullDRddlU
+GBFS
+Steps: 34, Weight: 7, Node: 82, Time: 9.12 ms, Memory: 55.15 KB
+rDlddrrruuLLrrddllUdrruulullDRddlU

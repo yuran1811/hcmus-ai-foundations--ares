@@ -1,0 +1,6 @@
+A*
+Steps: 8, Weight: 3, Node: 24, Time: 4.24 ms, Memory: 23.61 KB
+dddLdlUU
+GBFS
+Steps: 8, Weight: 3, Node: 19, Time: 6.79 ms, Memory: 20.41 KB
+dddLdlUU

@@ -1,0 +1,6 @@
+A*
+Steps: 60, Weight: 25, Node: 173092, Time: 61.23 s, Memory: 223.55 MB
+dlluLdlluUUrurrdLLrrurrdLLLDDLrrdLLrrrruLLLrrULrUruLLLdDDrdL
+GBFS
+Steps: 76, Weight: 27, Node: 265484, Time: 95.12 s, Memory: 287.26 MB
+dlluLdlluUUrurrdLDDLrrUddLLuruuLrdddrrruLLLuuurDDDrdLLuuuurrrdLLLddrrUUruLLL

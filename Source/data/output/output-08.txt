@@ -1,0 +1,6 @@
+A*
+Steps: 35, Weight: 7, Node: 27569, Time: 6.78 s, Memory: 25.68 MB
+rDullDRddllddrUrurrddlUluuuurrdLulD
+GBFS
+Steps: 41, Weight: 11, Node: 441, Time: 115.99 ms, Memory: 461.91 KB
+DulDrDrdrddlUlUlURldlddrUruuuulDurrrdLulD
