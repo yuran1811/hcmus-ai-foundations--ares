@@ -1,10 +1,16 @@
+import os
+
+from constants.enums import Algorithm
+from constants.paths import INPUT_DIR
 from core.game import Game
+from core.solver import SokobanSolver
 from utils import (
     get_project_toml_data,
     parse_args,
     with_gui_arg,
     with_version_arg,
 )
+from utils.generate import generate_output_content
 
 
 def dev():
@@ -12,7 +18,21 @@ def dev():
 
 
 def solve():
-    pass
+    for algo, res in (
+        SokobanSolver().load_map(os.path.join(INPUT_DIR, "input-01.txt")).searching([])
+    ).items():
+        (path, weight, expanded_node, explored_node), time, mem, mem_peak = res
+        print(
+            generate_output_content(
+                algo,
+                len(path),
+                weight,
+                expanded_node,
+                time,
+                mem_peak,
+                path,
+            )
+        )
 
 
 def main() -> int:
