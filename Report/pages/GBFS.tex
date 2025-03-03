@@ -1,5 +1,5 @@
 \subsection{Greedy Best-First Search}
-\noindent Greedy Best-First Search is similar to A* algorithm. The difference is that the vertices in the priority queue are ordered only by the estimated remaining distance to the solution. It has to be noted that complete best first search is not optimal.
+\noindent Greedy Best-First Search (GBFS) is an informed search algorithm that selects the next node based on a heuristic function. Unlike A*, it considers only the estimated cost to the goal and ignores the cost incurred so far. This makes it faster but less optimal, as it can get trapped in local optima. GBFS is often used when a fast, approximate solution is needed rather than the absolute shortest path.
 
 \begin{figure}[H]
 	\centering
