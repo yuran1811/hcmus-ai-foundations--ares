@@ -37,7 +37,7 @@
 	      Implements the DFS algorithm using a stack (LIFO). The search begins with the initial state in the frontier. The function explores states by popping from the stack and checking for the goal condition. If a new valid state is discovered, it is marked as visited and pushed onto the stack for further exploration.
 
 	\item \textbf{can\_go(current\_state, dir)}
-	      Checks whether the player can move in a given direction from the current state without encountering obstacles.
+	      Checks whether the player can move in a given direction from the current state without encountering obstacles and deadlock cells.
 
 	\item \textbf{go(current\_state, dir)}
 	      Generates a new state by moving the player in the specified direction, updating the relevant positions.

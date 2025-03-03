@@ -1,5 +1,11 @@
 \subsection{Uniform Cost Search}
-\noindent Uniform Cost Search (UCS) is a graph traversal algorithm that expands the least-cost node first. Unlike BFS and DFS, UCS considers edge weights, ensuring that the path found is the shortest in terms of total cost. It is functionally equivalent to Dijkstra’s algorithm when used for single-source shortest path problems. UCS operates using a priority queue, where nodes are processed based on their cumulative path cost, making it ideal for finding optimal solutions in weighted graphs.
+\begin{flushleft}
+	Uniform Cost Search (UCS) is a graph traversal algorithm that expands the least-cost node first.
+
+	Unlike BFS and DFS, UCS considers edge weights, ensuring that the path found is the shortest in terms of total cost. It is functionally equivalent to Dijkstra's algorithm when used for single-source shortest path problems.
+
+	UCS operates using a priority queue, where nodes are processed based on their cumulative path cost, making it ideal for finding optimal solutions in weighted graphs.
+\end{flushleft}
 
 \subsubsection{Pseudocode}
 \begin{algorithm}[H]
@@ -36,7 +42,7 @@
 	      Manages newly generated states, adding them to the frontier if they have not been visited or updating their cost if a lower-cost path is found.
 
 	\item \textbf{can\_go(current\_state, dir)}
-	      Checks whether the player can move in a given direction from the current state without encountering obstacles.
+	      Checks whether the player can move in a given direction from the current state without encountering obstacles and deadlock cells.
 
 	\item \textbf{go(current\_state, dir)}
 	      Generates a new state by moving the player in the specified direction, updating positions, and recalculating cost values.

@@ -52,7 +52,7 @@
 	      Uses the Hungarian algorithm to optimally assign stones to switches, minimizing the total weighted Manhattan distance.
 
 	\item \textbf{can\_go(current\_state, dir)}
-	      Checks whether the player can move in a given direction from the current state without encountering obstacles.
+	      Checks whether the player can move in a given direction from the current state without encountering obstacles and deadlock cells.
 
 	\item \textbf{go(current\_state, dir, heuristic)}
 	      Generates a new state by moving the player in the specified direction, updating positions and recalculating heuristic values.

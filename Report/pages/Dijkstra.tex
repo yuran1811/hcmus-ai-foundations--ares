@@ -1,5 +1,11 @@
 \subsection{Dijkstra's Algorithm}
-\noindent Dijkstra's algorithm is a classic shortest path algorithm that guarantees finding the minimum-cost path from a starting node to all other nodes in a weighted graph. It operates by iteratively selecting the node with the lowest cumulative cost and updating the distances of its neighbors. Like UCS, Dijkstra's algorithm uses a priority queue, but it is typically employed in broader applications such as routing and network optimization.
+\begin{flushleft}
+	Dijkstra's algorithm is a classic shortest path algorithm that guarantees finding the minimum-cost path from a starting node to all other nodes in a weighted graph.
+
+	It operates by iteratively selecting the node with the lowest cumulative cost and updating the distances of its neighbors.
+
+	Like UCS, Dijkstra's algorithm uses a priority queue, but it is typically employed in broader applications such as routing and network optimization.
+\end{flushleft}
 
 \subsubsection{Pseudocode}
 \begin{algorithm}[H]
@@ -37,7 +43,7 @@
 	      Manages newly generated states, checking if they should be added to the frontier or updated in the hash table based on their cost values.
 
 	\item \textbf{can\_go(current\_state, dir)}
-	      Checks whether the player can move in a given direction from the current state without encountering obstacles.
+	      Checks whether the player can move in a given direction from the current state without encountering obstacles and deadlock cells.
 
 	\item \textbf{go(current\_state, dir)}
 	      Generates a new state by moving the player in the specified direction, updating positions, and recalculating cost values.

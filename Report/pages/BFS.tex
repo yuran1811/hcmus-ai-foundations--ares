@@ -11,9 +11,9 @@
 \begin{algorithm}[H]
 	\caption{Breadth First Search (\textit{start, goal})}\label{alg:bfs}
 	\begin{algorithmic}[1]
-		\State queue \(gets\) [start]
+		\State queue \(\gets\) [start]
 		\While {queue is not empty}
-		\State node \(gets\) dequeue(queue)
+		\State node \(\gets\) dequeue(queue)
 		\If {node = goal}
 		\State return path
 		\EndIf
@@ -37,7 +37,7 @@
 	      Implements the BFS algorithm using a queue (FIFO). The search begins with the initial state in the frontier. The function explores states by dequeuing from the front, checking for the goal condition, and enqueuing valid new states.
 
 	\item \textbf{can\_go(current\_state, dir)}
-	      Checks whether the player can move in a given direction from the current state without encountering obstacles.
+	      Checks whether the player can move in a given direction from the current state without encountering obstacles and deadlock cells.
 
 	\item \textbf{go(current\_state, dir)}
 	      Generates a new state by moving the player in the specified direction, updating the relevant positions.
