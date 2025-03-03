@@ -1,12 +1,10 @@
 import pygame as pg
 
 from config import FPS, GAME_TITLE
-from gui.components import Cursor
+from gui.components import BGMController, Cursor
 from states.menu_state import MenuState
 from states.state import State
 from utils import get_screen_sz, update_screen_sz
-
-from .audio import Audio
 
 
 class Game:
@@ -19,8 +17,8 @@ class Game:
         self.screen = pg.display.set_mode(screen_size, pg.RESIZABLE)
 
         self.clock = pg.time.Clock()
-        self.audio = Audio()
         self.cursor = Cursor(scale_factor=4)
+        self.bgms_controller = BGMController()
 
         self.dt = 0.0
         self.running = True

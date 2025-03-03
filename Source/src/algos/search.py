@@ -4,7 +4,7 @@ from abc import ABC, abstractmethod
 from queue import Queue
 
 from constants.enums import Direction, GridItem
-from utils import profile
+from utils.metrics import profile
 
 type Point = tuple[int, int]
 type Stone = tuple[int, int, int]

@@ -24,6 +24,35 @@ class GridItem(Enum):
         return None
 
 
+class MinimapTileColor(Enum):
+    WALL = 0, (106, 106, 149, 255)
+    FLOOR = 1, (30, 30, 46, 255)
+    STONE = 2, (253, 199, 0, 255)
+    ARES = 3, (0, 255, 0, 255)
+    SWITCH = 4, (80, 162, 255, 255)
+    STONE_ON_SWITCH = 5, (5, 223, 114, 255)
+    ARES_ON_SWITCH = 6, (0, 255, 0, 255)
+    INVALID = 7, (255, 0, 0, 255)
+
+    @staticmethod
+    def get_color(tile_type: MinimapTileColor):
+        return tile_type.value[1]
+
+    @staticmethod
+    def get_color_by_type(tile_type: str):
+        for color in MinimapTileColor:
+            if color.name.lower() == tile_type:
+                return color.value[1]
+
+    @staticmethod
+    def get_color_by_char(char: str):
+        for color in MinimapTileColor:
+            if GridItem.convert_char(char) == color.value[0]:
+                return color.value[1]
+
+        return MinimapTileColor.INVALID.value[1]
+
+
 class Algorithm(Enum):
     BFS = 0, "BFS", "Breadth First Search"
     DFS = 1, "DFS", "Depth First Search"
