@@ -2,7 +2,6 @@ from collections.abc import Callable
 from typing import Any
 
 import pygame as pg
-
 from constants.enums import Direction
 
 from .decorators import WithLabel
@@ -74,6 +73,9 @@ class SelectComponent(WithLabel):
             if self.num_options == 0
             else self.default_placeholder
         )
+
+    def update_on_select(self, on_select: Callable[[Any], Any] | None):
+        self.on_select = on_select
 
     def update(self):
         pass

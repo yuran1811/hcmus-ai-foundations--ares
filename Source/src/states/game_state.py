@@ -2,7 +2,6 @@ from collections.abc import Generator
 from typing import Any, TypedDict
 
 import pygame as pg
-
 from config import BG_COLOR, GRID_SIZE
 from constants.enums import Algorithm, Direction, GameStateType, Orientation
 from entities.map import Map
@@ -299,6 +298,9 @@ class GameState(State):
         self.selects["map"].change_selected_idx(self.current_map_index)
 
         self.selects["algo"].update_options(list(self.map_sol.keys()))
+        self.selects["algo"].update_on_select(
+            lambda _: self.on_algo_select(list(self.map_sol.keys())[_])
+        )
 
     def load_map_state(self, from_index: int = 1):
         screen_size = get_screen_sz()
