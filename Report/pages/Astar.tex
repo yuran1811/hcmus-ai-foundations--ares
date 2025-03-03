@@ -62,6 +62,23 @@
 
 \end{itemize}
 
+\subsubsection{Heuristics in A* Algorithm}
+A* search uses a heuristic function \( h(n) \) to estimate the cost from a given state to the goal. The total cost function is defined as:
+\[
+f(n) = g(n) + h(n)
+\]
+where:
+\begin{itemize}
+    \item \( g(n) \) is the actual cost from the start state to the current state \( n \).
+    \item \( h(n) \) is the estimated cost from \( n \) to the goal state.
+\end{itemize}
+For Sokoban, common heuristic choices include:
+\begin{itemize}
+    \item \textbf{Manhattan Distance:} The sum of the absolute differences between the x and y coordinates of each stone and its nearest goal position.
+    \item \textbf{Hungarian Algorithm:} Computes an optimal assignment of stones to switches, minimizing the total weighted Manhattan distance.
+\end{itemize}
+A* is optimal if \( h(n) \) is \textit{admissible} (never overestimates the true cost) and \textit{consistent} (satisfies the triangle inequality).
+
 \subsubsection{Time and Space Complexity}
 \textbf{Time Complexity:} \( O(b^d) \) in the worst case, but with a good heuristic, it can be significantly reduced. If the heuristic is admissible and consistent, A* is optimal and complete.
 
