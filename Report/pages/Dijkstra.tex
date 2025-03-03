@@ -1,0 +1,58 @@
+\subsection{Dijkstra's Algorithm}
+\begin{flushleft}
+	Dijkstra's algorithm is a classic shortest path algorithm that guarantees finding the minimum-cost path from a starting node to all other nodes in a weighted graph.
+
+	It operates by iteratively selecting the node with the lowest cumulative cost and updating the distances of its neighbors.
+
+	Like UCS, Dijkstra's algorithm uses a priority queue, but it is typically employed in broader applications such as routing and network optimization.
+\end{flushleft}
+
+\subsubsection{Pseudocode}
+\begin{algorithm}[H]
+	\caption{Dijkstra's Algorithm (\textit{start, goal})}
+	\label{alg:dijkstra}
+	\begin{algorithmic}[1]
+		\State priority queue \(\gets\) [(start, cost = 0)]
+		\State distances[start] \(\gets\) 0
+		\While {priority queue is not empty}
+		\State (node, cost) \(\gets\) dequeue(priority queue)
+		\If {node = goal}
+		\State return distances
+		\EndIf
+		\ForAll {neighbor in valid moves}
+		\State new cost \(\gets\) cost + move cost
+		\If {new cost \(<\) distances[neighbor]}
+		\State distances[neighbor] \(\gets\) new cost
+		\State enqueue(priority queue, (neighbor, new cost))
+		\EndIf
+		\EndFor
+		\EndWhile
+		\State return distances
+	\end{algorithmic}
+\end{algorithm}
+
+\subsubsection{Implementation}
+\begin{itemize}
+	\item \textbf{\_\_init\_\_(\ldots)}
+	      Initializes the Dijkstra search algorithm with grid dimensions, matrix representation, initial player position, stone positions, and switch positions. It also includes an option for deadlock detection. The initial state's cost \( g \) is set to zero.
+
+	\item \textbf{search()}
+	      Implements Dijkstra's algorithm using a priority queue (min-heap). The function explores states based on the lowest accumulated cost \( g \). It expands nodes by generating successors, updating costs, and maintaining a hash table for efficient state lookup.
+
+	\item \textbf{handle(new\_state, closed, frontier, state\_hash\_table)}
+	      Manages newly generated states, checking if they should be added to the frontier or updated in the hash table based on their cost values.
+
+	\item \textbf{can\_go(current\_state, dir)}
+	      Checks whether the player can move in a given direction from the current state without encountering obstacles and deadlock cells.
+
+	\item \textbf{go(current\_state, dir)}
+	      Generates a new state by moving the player in the specified direction, updating positions, and recalculating cost values.
+
+	\item \textbf{construct\_path(final\_state)}
+	      Reconstructs the sequence of moves leading to the goal state by backtracking from the final state.
+\end{itemize}
+
+\subsubsection{Time and Space Complexity}
+\textbf{Time Complexity:} \( O((V + E) \log V) \), where \( V \) is the number of vertices and \( E \) is the number of edges. Using a priority queue (min-heap) allows efficient updates.
+
+\textbf{Space Complexity:} \( O(V + E) \), as it stores all nodes and edges in the graph.

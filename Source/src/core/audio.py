@@ -9,7 +9,11 @@ class Audio:
     """
 
     def __init__(self):
+<<<<<<< HEAD
         self.sounds: dict[str, dict[str, bool | pg.mixer.Sound]] = {}
+=======
+        self.sounds: dict[str, pg.mixer.Sound] = {}
+>>>>>>> 13d1998856ea5592dace2d4413bbda0213d6835d
 
     def load_sound(self, name: str, path: str):
         """
@@ -20,10 +24,14 @@ class Audio:
             logging.warning("Sound %s already loaded", name)
             return
 
+<<<<<<< HEAD
         self.sounds[name] = {
             "src": pg.mixer.Sound(path),
             "playing": False,
         }
+=======
+        self.sounds[name] = pg.mixer.Sound(path)
+>>>>>>> 13d1998856ea5592dace2d4413bbda0213d6835d
 
     def load_sounds(self, sounds: dict[str, str]):
         """
@@ -37,6 +45,7 @@ class Audio:
         for name in sounds:
             self.load_sound(name, sounds[name])
 
+<<<<<<< HEAD
     def set_volume(self, name: str, volume: float):
         if name not in self.sounds or not (0.0 <= volume <= 1.0):
             return
@@ -75,3 +84,16 @@ class Audio:
             if name in self.sounds:
                 self.sounds[name]["src"].stop()  # type: ignore
                 self.sounds[name]["playing"] = False
+=======
+    def play(self, name: str, loops=0, maxtime=0, fade_ms=0):
+        if name in self.sounds:
+            self.sounds[name].play(loops, maxtime, fade_ms)
+
+    def stop(self, name=None):
+        if name is None:
+            for sound_name in self.sounds:
+                self.sounds[sound_name].stop()
+        else:
+            if name in self.sounds:
+                self.sounds[name].stop()
+>>>>>>> 13d1998856ea5592dace2d4413bbda0213d6835d

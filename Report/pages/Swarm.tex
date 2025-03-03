@@ -1,0 +1,78 @@
+\subsection{Swarm Algorithm and Variants}
+\noindent Swarm-based algorithms are inspired by the collective behavior of biological swarms, such as flocks of birds or colonies of ants. These algorithms use multiple agents working in parallel to explore the search space efficiently. Instead of relying on a single expanding frontier like traditional search algorithms, swarm algorithms distribute the search effort across multiple agents, enabling faster convergence in large or complex environments. They are particularly useful in pathfinding, optimization, and multi-agent coordination problems.
+\subsubsection{Convergent Swarm Algorithm}
+\noindent The Convergent Swarm Algorithm enhances the basic swarm approach by ensuring that multiple search agents progressively converge toward an optimal or near-optimal solution. It balances exploration and exploitation, reducing redundant searches while maintaining diversity in the search space. By dynamically adjusting the movement and evaluation strategies of agents, the convergent swarm improves solution quality and efficiency over time.
+\subsubsection{Bidirectional Swarm Algorithm}
+\noindent The Bidirectional Swarm Algorithm further optimizes search efficiency by initiating two simultaneous search processes—one from the start position and another from the goal. These two search fronts progress independently until they meet, significantly reducing the search time compared to unidirectional approaches. This variant is particularly effective in large graphs, where expanding from both ends minimizes unnecessary exploration and accelerates pathfinding.
+
+\subsubsection{Implementation}
+\begin{itemize}
+      \item \textbf{\_\_init\_\_(\ldots)}
+            Initializes the Swarm search algorithm with grid dimensions, matrix representation, initial player position, stone positions, and switch positions. It also includes options for deadlock detection and heuristic optimization.
+
+      \item \textbf{search()}
+            Defines the base search function for Swarm, Swarm Convergent, and Swarm Bidirectional approaches. Currently, the function tracks expanded nodes but does not implement a complete pathfinding process.
+
+      \item \textbf{heuristic(stones\_pos, switches\_pos)}
+            Computes the heuristic function to estimate the cost to reach the goal. The function dynamically selects between the Hungarian heuristic and Manhattan heuristic based on the optimization flag.
+
+      \item \textbf{mahattan\_heuristic(stones\_pos, switches\_pos)}
+            Uses the Manhattan distance to estimate the cost, summing the minimum weighted distances from each stone to a switch.
+
+      \item \textbf{hungarian\_heuristic(stones\_pos, switches\_pos)}
+            Utilizes the Hungarian algorithm to optimally assign stones to switches, minimizing the total weighted Manhattan distance.
+
+      \item \textbf{SwarmConvergent.search()}
+            Implements a variant of Swarm where multiple paths converge towards a solution.
+
+      \item \textbf{SwarmBidirectional.search()}
+            Implements a bidirectional search variant of Swarm, exploring the state space from both the start and goal positions simultaneously.
+\end{itemize}
+
+\subsubsection{Time and Space Complexity}
+
+\textbf{Swarm Algorithm (General Case)}
+\begin{itemize}
+      \item \textbf{Time Complexity}: \( O(k \cdot b^d) \)
+
+            where:
+            \begin{itemize}
+                  \item \( k \) is the number of agents.
+                  \item \( b \) is the branching factor.
+                  \item \( d \) is the depth of the solution.
+            \end{itemize}
+      \item \textbf{Space Complexity}:  \( O(k \cdot S) \)
+
+            where \( S \) is the size of the state space.
+\end{itemize}
+
+\textbf{Convergent Swarm Algorithm}
+\begin{itemize}
+      \item \textbf{Time Complexity}: \( O(k \cdot b^{d'}) \)
+
+            where \( d' < d \), since the algorithm reduces redundant exploration.
+      \item \textbf{Space Complexity}: \( O(k \cdot S) \)
+\end{itemize}
+
+\textbf{Bidirectional Swarm Algorithm}
+\begin{itemize}
+      \item \textbf{Time Complexity}: \( O(k \cdot b^{d/2}) \)
+
+            where the depth of the search is approximately halved due to the bidirectional approach.
+      \item \textbf{Space Complexity}: \( O(k \cdot S) \)
+\end{itemize}
+
+\subsubsection{Comparison Table}
+\begin{table}[h]
+      \centering
+      \begin{tabular}{|c|c|c|}
+            \hline
+            \textbf{Algorithm}  & \textbf{Time Complexity} & \textbf{Space Complexity} \\
+            \hline
+            Swarm               & \( O(k \cdot b^d) \)     & \( O(k \cdot S) \)        \\
+            Convergent Swarm    & \( O(k \cdot b^{d'}) \)  & \( O(k \cdot S) \)        \\
+            Bidirectional Swarm & \( O(k \cdot b^{d/2}) \) & \( O(k \cdot S) \)        \\
+            \hline
+      \end{tabular}
+      \label{tab:swarm_complexity}
+\end{table}

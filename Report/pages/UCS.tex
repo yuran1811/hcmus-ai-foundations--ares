@@ -1,0 +1,57 @@
+\subsection{Uniform Cost Search}
+\begin{flushleft}
+	Uniform Cost Search (UCS) is a graph traversal algorithm that expands the least-cost node first.
+
+	Unlike BFS and DFS, UCS considers edge weights, ensuring that the path found is the shortest in terms of total cost. It is functionally equivalent to Dijkstra's algorithm when used for single-source shortest path problems.
+
+	UCS operates using a priority queue, where nodes are processed based on their cumulative path cost, making it ideal for finding optimal solutions in weighted graphs.
+\end{flushleft}
+
+\subsubsection{Pseudocode}
+\begin{algorithm}[H]
+	\caption{Uniform Cost Search (\textit{start, goal})}
+	\label{alg:ucs}
+	\begin{algorithmic}[1]
+		\State priority queue \(\gets\) [(start, cost = 0)]
+		\While {priority queue is not empty}
+		\State (node, cost) \(\gets\) dequeue(priority queue)
+		\If {node = goal}
+		\State return path
+		\EndIf
+		\ForAll {neighbor in valid moves}
+		\State new cost \(\gets\) cost + move cost
+		\If {neighbor not visited or new cost \(<\) previous cost}
+		\State mark neighbor as visited
+		\State enqueue(priority queue, (neighbor, new cost))
+		\EndIf
+		\EndFor
+		\EndWhile
+		\State return failure
+	\end{algorithmic}
+\end{algorithm}
+
+\subsubsection{Implementation}
+\begin{itemize}
+	\item \textbf{\_\_init\_\_(\ldots)}
+	      Initializes the Uniform Cost Search (UCS) algorithm with grid dimensions, matrix representation, initial player position, stone positions, and switch positions. It also includes an option for deadlock detection. The initial state's cost \( g \) is set to zero.
+
+	\item \textbf{search()}
+	      Implements the UCS algorithm using a priority queue (min-heap). The function expands the node with the lowest accumulated cost \( g \) at each step. It explores all possible states, updating costs and storing them in a hash table for efficient lookup.
+
+	\item \textbf{handle(new\_state, closed, frontier, state\_hash\_table)}
+	      Manages newly generated states, adding them to the frontier if they have not been visited or updating their cost if a lower-cost path is found.
+
+	\item \textbf{can\_go(current\_state, dir)}
+	      Checks whether the player can move in a given direction from the current state without encountering obstacles and deadlock cells.
+
+	\item \textbf{go(current\_state, dir)}
+	      Generates a new state by moving the player in the specified direction, updating positions, and recalculating cost values.
+
+	\item \textbf{construct\_path(final\_state)}
+	      Reconstructs the sequence of moves leading to the goal state by backtracking from the final state.
+\end{itemize}
+
+\subsubsection{Time and Space Complexity}
+\textbf{Time Complexity:} \( O(b^C) \), where \( C \) is the cost of the optimal solution. In the worst case, UCS expands all nodes up to the goal depth.
+
+\textbf{Space Complexity:} \( O(b^C) \), as it stores all expanded nodes in memory.
