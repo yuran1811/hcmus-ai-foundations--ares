@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import os
 import re
 
@@ -5,8 +7,6 @@ from algos import BFS, DFS, GBFS, UCS, AStar, Dijkstra, Swarm
 from algos.search import Search, StonesPosFreeze
 from algos.swarm import AntColonyOptimization, SwarmBidirectional, SwarmConvergent
 from constants.enums import Algorithm, GridItem
-from constants.paths import INPUT_DIR
-from utils.generate import generate_output_content
 
 
 class SokobanSolver:
@@ -117,21 +117,3 @@ class SokobanSolver:
             for key, algo in __algos_searching.items()
             if Algorithm.from_label(key) in algos
         }
-
-
-if __name__ == "__main__":
-    for algo, res in (
-        SokobanSolver().load_map(os.path.join(INPUT_DIR, "input-01.txt")).searching([])
-    ).items():
-        (path, weight, expanded_node, explored_node), time, mem, mem_peak = res
-        print(
-            generate_output_content(
-                algo,
-                len(path),
-                weight,
-                expanded_node,
-                time,
-                mem_peak,
-                path,
-            )
-        )
