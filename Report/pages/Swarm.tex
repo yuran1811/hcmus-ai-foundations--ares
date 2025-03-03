@@ -4,32 +4,32 @@
 
 \subsubsection{Implementation}
 \begin{itemize}
-    \item \textbf{\_\_init\_\_(...)}  
-    Initializes the Swarm search algorithm with grid dimensions, matrix representation, initial player position, stone positions, and switch positions. It also includes options for deadlock detection and heuristic optimization.
+    \item \textbf{\_\_init\_\_(\ldots)}
+          Initializes the Swarm search algorithm with grid dimensions, matrix representation, initial player position, stone positions, and switch positions. It also includes options for deadlock detection and heuristic optimization.
 
-    \item \textbf{search()}  
-    Defines the base search function for Swarm, Swarm Convergent, and Swarm Bidirectional approaches. Currently, the function tracks expanded nodes but does not implement a complete pathfinding process.
+    \item \textbf{search()}
+          Defines the base search function for Swarm, Swarm Convergent, and Swarm Bidirectional approaches. Currently, the function tracks expanded nodes but does not implement a complete pathfinding process.
 
-    \item \textbf{heuristic(stones\_pos, switches\_pos)}  
-    Computes the heuristic function to estimate the cost to reach the goal. The function dynamically selects between the Hungarian heuristic and Manhattan heuristic based on the optimization flag.
+    \item \textbf{heuristic(stones\_pos, switches\_pos)}
+          Computes the heuristic function to estimate the cost to reach the goal. The function dynamically selects between the Hungarian heuristic and Manhattan heuristic based on the optimization flag.
 
-    \item \textbf{mahattan\_heuristic(stones\_pos, switches\_pos)}  
-    Uses the Manhattan distance to estimate the cost, summing the minimum weighted distances from each stone to a switch.
+    \item \textbf{mahattan\_heuristic(stones\_pos, switches\_pos)}
+          Uses the Manhattan distance to estimate the cost, summing the minimum weighted distances from each stone to a switch.
 
-    \item \textbf{hungarian\_heuristic(stones\_pos, switches\_pos)}  
-    Utilizes the Hungarian algorithm to optimally assign stones to switches, minimizing the total weighted Manhattan distance.
+    \item \textbf{hungarian\_heuristic(stones\_pos, switches\_pos)}
+          Utilizes the Hungarian algorithm to optimally assign stones to switches, minimizing the total weighted Manhattan distance.
 
-    \item \textbf{SwarmConvergent.search()}  
-    Implements a variant of Swarm where multiple paths converge towards a solution. Currently, it maintains a set of explored states without a full implementation.
+    \item \textbf{SwarmConvergent.search()}
+          Implements a variant of Swarm where multiple paths converge towards a solution. Currently, it maintains a set of explored states without a full implementation.
 
-    \item \textbf{SwarmBidirectional.search()}  
-    Implements a bidirectional search variant of Swarm, exploring the state space from both the start and goal positions simultaneously. It maintains a set of explored states but lacks a fully developed pathfinding process.
+    \item \textbf{SwarmBidirectional.search()}
+          Implements a bidirectional search variant of Swarm, exploring the state space from both the start and goal positions simultaneously. It maintains a set of explored states but lacks a fully developed pathfinding process.
 
-    \item \textbf{AntColonyOptimization.\_\_init\_\_(...)}  
-    Initializes the Ant Colony Optimization (ACO) search algorithm with the same parameters as Swarm, allowing for heuristic-based optimizations.
+    \item \textbf{AntColonyOptimization.\_\_init\_\_(...)}
+          Initializes the Ant Colony Optimization (ACO) search algorithm with the same parameters as Swarm, allowing for heuristic-based optimizations.
 
-    \item \textbf{AntColonyOptimization.search()}  
-    Implements the base ACO search function, tracking expanded states but lacking full functionality.
+    \item \textbf{AntColonyOptimization.search()}
+          Implements the base ACO search function, tracking expanded states but lacking full functionality.
 \end{itemize}
 
 \subsubsection{Time and Space Complexity}
