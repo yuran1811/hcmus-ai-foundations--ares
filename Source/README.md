@@ -12,27 +12,79 @@
   <img alt="Code Size" src="https://img.shields.io/github/languages/code-size/yuran1811/hcmus-ai-foundations">
 </p>
 
-<div style="display:flex;gap: 24px;justify-content:center">
-  <a href="https://github.com/yuran1811/hcmus-ai-foundations/releases" target="_blank">Releases</a>
-</div>
-
-## Introduction
-
-## Features
-
-## Tech Stack
-
-<img src="https://skill-icons-livid.vercel.app/icons?i=python,rye&gap=60" height="36" />
-
 ## Screenshots
 
 <div style="display:flex;gap:12px;justify-content:center">
-	<img src="" style="width:45%;max-width:380px">
-	<img src="" style="width:45%;max-width:380px">
+	<img src="./public/screenshots/home.png" style="width:45%;max-width:380px">
+	<img src="./public/screenshots/game.png" style="width:45%;max-width:380px">
+</div>
+<div style="display:flex;gap:12px;justify-content:center">
+	<img src="./public/screenshots/pick-algo.png" style="width:45%;max-width:380px">
+	<img src="./public/screenshots/pick-map.png" style="width:45%;max-width:380px">
+</div>
+<div style="display:flex;gap:12px;justify-content:center">
+	<img src="./public/screenshots/setting.png" style="width:45%;max-width:380px">
+	<img src="./public/screenshots/import-map.png" style="width:45%;max-width:380px">
 </div>
 
-## Installation
+## Quick Start
 
-## Development
+- This project using [rye](https://rye.astral.sh/) as package manager.
 
-## References
+**Install dependencies**
+
+```bash
+rye sync
+```
+
+or
+
+```bash
+pip install -r requirements.txt
+```
+
+**Running the Project**
+
+```bash
+rye run solve
+```
+
+or
+
+```bash
+rye run dev
+```
+
+or
+
+```bash
+rye run ares
+```
+
+or
+
+```bash
+rye run ares [OPTIONS]
+
+Options:
+	-v,	--version	Print the version
+		--gui		Using GUI
+```
+
+**Testing**
+
+```bash
+rye test
+```
+
+**Linting**
+
+```bash
+rye lint
+```
+
+**Formatting**
+
+```bash
+rye fmt
+```
