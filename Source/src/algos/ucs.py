@@ -50,6 +50,7 @@ class UCS(Search):
         if new_state.gval < state_hash_table[id][0].gval:
             state_hash_table[id][0].gval = new_state.gval
             state_hash_table[id][0].ancestor = new_state.ancestor
+            state_hash_table[id][0].pushed_stone = new_state.pushed_stone
 
             if not state_hash_table[id][1]:
                 state_hash_table[id][1] = True
