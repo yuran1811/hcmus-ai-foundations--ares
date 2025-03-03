@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 from .args import parse_args, with_gui_arg, with_version_arg
 
 # from .asset_loader import (
@@ -78,7 +77,3 @@ __all__ = [
     #
     "profile",
 ]
-=======
-from .asset_loader import *
-from .generate import *
->>>>>>> 13d1998856ea5592dace2d4413bbda0213d6835d
