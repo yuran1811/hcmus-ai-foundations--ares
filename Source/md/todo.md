@@ -2,7 +2,6 @@
 
 - [x] export `requirements.txt`
 - [x] map level indexing
-- [ ] generate outputs
 
 ## Assessment
 
@@ -12,11 +11,11 @@
 - [x] Implement A\* correctly.
 - [x] Generate at least 10 test cases for each level with different attributes.
 - [x] GUI.
-- [ ] Output files.
-- [ ] Videos to demonstrate all algorithms for some test cases.
-- [ ] Report your algorithm and experiment with some reflection or comments.
-- [ ] Implement Swarm Algorithm, Convergent Swarm Algorithm, or Bidirectional Swarm Algorithm.
-- [ ] Write report for Swarm Algorithm, Convergent Swarm Algorithm, or Bidirectional Swarm Algorithm.
+- [x] Output files.
+- [x] Videos to demonstrate all algorithms for some test cases.
+- [x] Report your algorithm and experiment with some reflection or comments.
+- [x] Implement Swarm Algorithm, Convergent Swarm Algorithm, or Bidirectional Swarm Algorithm.
+- [x] Write report for Swarm Algorithm, Convergent Swarm Algorithm, or Bidirectional Swarm Algorithm.
 
 ## Algo
 
@@ -51,9 +50,9 @@
 - [x] Member information (Student ID, full name, etc.)
 - [x] task assignment info (with assigned to, completion rate)
 - [x] self-evaluation of the project requirements
-- [ ] each algo report (detailed explanation including imple process, heuristic functin, etc.) with imgs and diagrams
-- [ ] test case description and experiment results (mem usage, time complexity, etc.) (Highlight challenges and compare the overall behavior of your algorithms.) (use tables)
+- [x] each algo report (detailed explanation including imple process, heuristic functin, etc.) with imgs and diagrams
+- [x] test case description and experiment results (mem usage, time complexity, etc.) (Highlight challenges and compare the overall behavior of your algorithms.) (use tables)
 - benchmark using chart and graphs (with/without opt like deadlock, hungarian) => using `matplotlib.pyplot`
-  - [ ] mem
-  - [ ] time
-  - [ ] state
+  - [x] mem
+  - [x] time
+  - [x] state
