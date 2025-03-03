@@ -11,8 +11,8 @@ from .decorators import WithLabel
 class SelectComponent(WithLabel):
     def __init__(
         self,
-        x: float,
-        y: float,
+        x: int,
+        y: int,
         options: list[str],
         default_index=0,
         *,

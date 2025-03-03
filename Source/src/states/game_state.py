@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 from collections.abc import Generator
 from typing import Any, TypedDict
 
@@ -11,6 +10,7 @@ from entities.player import Player
 from gui.components import (
     Button,
     GameInfo,
+    MapImport,
     MediaController,
     MiniMap,
     SelectComponent,
@@ -20,24 +20,14 @@ from gui.handlers.cursor import cursor_handler
 from utils import (
     get_input_filenames,
     get_screen_sz,
-    get_speed,
     load_input_data,
     load_output_data,
     normalize_output_data,
 )
-=======
-import pygame as pg
-
-from config import BG_COLOR, GRID_SIZE, SCREEN_HEIGHT, SCREEN_WIDTH
-from entities.player import Player
-from gui.components.button import Button
-from gui.handlers.cursor_handler import cursor_handler
->>>>>>> 13d1998856ea5592dace2d4413bbda0213d6835d
 
 from .state import State
 
 
-<<<<<<< HEAD
 class MoveData(TypedDict):
     player_pos: pg.Vector2
     stone_moved: pg.Vector2 | None
@@ -54,11 +44,14 @@ class GameState(State):
         screen_size = get_screen_sz()
         input_filenames = get_input_filenames()
         input_filenames_sz = len(input_filenames)
+        import_map_btn_rect = pg.Rect(10, 540, 160, 40)
 
         self.debug_mode = False
 
         self.game = game
-        self.game_info = GameInfo(screen_size[0] - 175, 10, show_fps=True)
+
+        self.game_info = GameInfo(0, 0, show_fps=True)
+        self.game_info.set_position(screen_size[0] - 195, 10)
 
         self.current_map_index = 1
         self.state_type = GameStateType.PLAYING
@@ -71,18 +64,28 @@ class GameState(State):
         self.undo_history: list[MoveData] = []
         self.redo_history: list[MoveData] = []
 
+        self.minimap = MiniMap(self, 200, 150)
+
+        self.map_import = MapImport(
+            screen_size[0] // 2 - 200,
+            screen_size[1] - 350,
+            400,
+            350,
+            toggle_rect=import_map_btn_rect,
+        )
+
         self.controllers = MediaController(
             10,
             60,
             show_play=True,
-            # show_speed=True,
+            show_speed=True,
             show_zoom=True,
             orientation=Orientation.VERTICAL,
             scale_factor=4,
             on_play=lambda: self.toggle_simulation(True),
             on_pause=lambda: self.toggle_simulation(False),
-            # on_speed_up=lambda _: self.on_speed_change(_),
-            # on_speed_down=lambda _: self.on_speed_change(-_),
+            on_speed_up=lambda _: self.game_info.update_simulation_speed(_),
+            on_speed_down=lambda _: self.game_info.update_simulation_speed(_),
             on_prev=lambda: self.load_map(
                 from_index=(self.current_map_index - 1 + input_filenames_sz)
                 % input_filenames_sz
@@ -93,8 +96,8 @@ class GameState(State):
             # on_backward=self.undo_move,
             # on_forward=self.redo_move,
             on_reset=self.reload_map,
-            on_zoom_in=lambda: self.zoom_minimap(0.1),
-            on_zoom_out=lambda: self.zoom_minimap(-0.1),
+            on_zoom_in=lambda: self.zoom_minimap(1),
+            on_zoom_out=lambda: self.zoom_minimap(-1),
         )
 
         self.selects = {
@@ -127,6 +130,14 @@ class GameState(State):
                 "Back",
                 self.back,
             ),
+            "map_import": Button(
+                import_map_btn_rect.x,
+                import_map_btn_rect.y,
+                import_map_btn_rect.width,
+                import_map_btn_rect.height,
+                "Import Map",
+                self.map_import.toggle,
+            ),
         }
 
         self.dialogs = {
@@ -136,32 +147,18 @@ class GameState(State):
         }
 
         self.load_map(from_index=self.current_map_index)
-=======
-class GameState(State):
-    def __init__(self, game, *, map_size: pg.Rect):
-        super().__init__()
 
-        self.game = game
-        self.player = Player(5 * GRID_SIZE, 5 * GRID_SIZE)
-        self.camera = pg.Vector2(0, 0)
+    def responsive_handle(self):
+        super().responsive_handle()
 
-        self.map_size = map_size
+        screen_size = get_screen_sz()
 
-        self.buttons = [
-            Button(
-                0,
-                0,
-                100,
-                50,
-                "Back",
-                self.back,
-            )
-        ]
-
-        self.debug_mode = False
->>>>>>> 13d1998856ea5592dace2d4413bbda0213d6835d
-
-        self.minimap = MiniMap(self, 200, 150)
+        self.map_import.set_position(
+            screen_size[0] // 2 - 200,
+            screen_size[1] - 350,
+            self.buttons["map_import"].rect,
+        )
+        self.game_info.set_position(screen_size[0] - 195, 10)
 
     def boot(self):
         pass
@@ -173,7 +170,6 @@ class GameState(State):
         pass
 
     def update(self, dt: float):
-<<<<<<< HEAD
         if self.current_simulation is not None and self.is_simulating:
             try:
                 simulation_done = next(self.current_simulation)
@@ -190,7 +186,8 @@ class GameState(State):
             self.game,
             buttons=list(self.dialogs["victory"].buttons.values())
             + list(self.buttons.values())
-            + list(self.controllers.components.values()),
+            + list(self.controllers.components.values())
+            + list(self.map_import.buttons.values()),
         )
 
         self.game_info.update(dt, self.game.clock)
@@ -199,32 +196,20 @@ class GameState(State):
         self.controllers.update(dt)
         [_.update() for _ in list(self.selects.values()) + list(self.buttons.values())]
 
+        if self.map_import.is_shown():
+            self.map_import.update()
+
         if self.state_type == GameStateType.PLAYING:
             self.update_camera()
             self.player.update(dt)
 
-            if self.map.is_win():
-                self.win_handler()
-=======
-        cursor_handler(self.game, buttons=self.buttons)
-
-        self.player.update(dt)
-
-        # Update camera to follow player with bounds checking
-        self.camera.x = self.player.pixel_pos.x - SCREEN_WIDTH // 2
-        self.camera.y = self.player.pixel_pos.y - SCREEN_HEIGHT // 2
-
-        # Clamp camera to map bounds
-        self.camera.x = max(0, min(self.camera.x, self.map_size.width - SCREEN_WIDTH))
-        self.camera.y = max(0, min(self.camera.y, self.map_size.height - SCREEN_HEIGHT))
->>>>>>> 13d1998856ea5592dace2d4413bbda0213d6835d
-
-        self.minimap.zoom_level = max(0.1, min(1.0, self.minimap.zoom_level))
+        if self.map.is_win():
+            if not self.current_simulation:
+                self.win_handler(False)
 
     def draw(self, screen: pg.Surface):
         screen.fill(BG_COLOR)
 
-<<<<<<< HEAD
         self.map.draw(screen, self.camera, self.player.pixel_pos)
         self.player.draw(screen, self.camera)
 
@@ -236,14 +221,14 @@ class GameState(State):
         self.game_info.draw(screen)
         self.minimap.draw(screen)
 
+        if self.map_import.is_shown():
+            self.map_import.draw(screen)
+
         if self.state_type == GameStateType.VICTORY:
             self.dialogs["victory"].draw(screen)
 
         if self.debug_mode:
             self.draw_debug(screen)
-
-    def draw_debug(self, screen: pg.Surface):
-        self.player.draw_debug(screen, self.camera)
 
     def handle_event(self, event: pg.event.Event):
         super().handle_event(event)
@@ -261,9 +246,41 @@ class GameState(State):
             for _ in list(self.selects.values()) + list(self.buttons.values())
         ]
 
+        if self.map.is_win():
+            self.win_handler(True)
+
+        if self.map_import.is_shown():
+            self.map_import.handle_event(event)
+
     # Additional methods
+    def draw_debug(self, screen: pg.Surface):
+        self.player.draw_debug(screen, self.camera)
+
+    def update_camera(self):
+        if self.minimap.dragging:
+            return
+
+        screen_size = get_screen_sz()
+        half_screen_w = screen_size[0] // 2
+        half_screen_h = screen_size[1] // 2
+        self.camera.x = self.player.pixel_pos.x - half_screen_w
+        self.camera.y = self.player.pixel_pos.y - half_screen_h
+
+        map_w, map_h = self.map.size[0], self.map.size[1]
+        self.camera.x = max(0, min(self.camera.x, map_w - screen_size[0]))
+        self.camera.y = max(0, min(self.camera.y, map_h - screen_size[1]))
+
+        if map_w < screen_size[0]:
+            self.camera.x = self.player.pixel_pos.x - screen_size[0] // 2
+        if map_h < screen_size[1]:
+            self.camera.y = self.player.pixel_pos.y - screen_size[1] // 2
+
+    # Map methods
     def reset_level_state(self):
         self.state_type = GameStateType.PLAYING
+
+        if self.minimap:
+            self.minimap.reset_zoom()
 
         self.game_info.reset()
         self.selects["algo"].reset()
@@ -303,83 +320,7 @@ class GameState(State):
     def reload_map_state(self):
         self.load_map_state(from_index=self.current_map_index)
 
-    def update_camera(self):
-        if self.minimap.dragging:
-            return
-
-        screen_size = get_screen_sz()
-        half_screen_w = screen_size[0] // 2
-        half_screen_h = screen_size[1] // 2
-        self.camera.x = self.player.pixel_pos.x - half_screen_w
-        self.camera.y = self.player.pixel_pos.y - half_screen_h
-
-        map_w, map_h = self.map.size[0], self.map.size[1]
-        self.camera.x = max(0, min(self.camera.x, map_w - screen_size[0]))
-        self.camera.y = max(0, min(self.camera.y, map_h - screen_size[1]))
-
-        if map_w < screen_size[0]:
-            self.camera.x = self.player.pixel_pos.x - screen_size[0] // 2
-        if map_h < screen_size[1]:
-            self.camera.y = self.player.pixel_pos.y - screen_size[1] // 2
-
-    def win_handler(self):
-        self.game_info.stop_timer()
-        self.state_type = GameStateType.VICTORY
-
-        self.dialogs["victory"].show()
-        self.dialogs["victory"].toggle_confetti(True)
-
-    def zoom_minimap(self, delta: float):
-        self.minimap.zoom_level = max(0.1, min(1.0, self.minimap.zoom_level + delta))
-        self.minimap.constrain_content()
-
-    def on_next_map(self):
-        self.load_map(from_index=self.current_map_index + 1)
-
-        self.state_type = GameStateType.PLAYING
-
-        self.dialogs["victory"].toggle_confetti(False)
-
-    def on_speed_change(self, speed: int):
-        self.controllers.state["speed"] = get_speed(abs(speed), speed > 0)
-
-    def on_algo_select(self, algo: str):
-        self.simulate_algo = algo
-        self.update_simulate_algo(algo)
-
-        if self.map_sol and self.simulate_algo in self.map_sol:
-            self.toggle_simulation(True)
-
-    def on_player_move(
-        self,
-        step_weight: int = 0,
-        *,
-        stone_prev_pos: pg.Vector2 | None = None,
-        stone_moved: pg.Vector2 | None = None,
-        from_tile_type: pg.Surface | None = None,
-        to_tile_type: pg.Surface | None = None,
-    ):
-        self.game_info.increment_step(step_weight)
-
-        self.add_move_to_history(
-            {
-                "player_pos": self.player.grid_pos.copy(),
-                "stone_prev_pos": stone_prev_pos,
-                "stone_moved": stone_moved,
-                "weight": step_weight,
-                "from_tile_type": from_tile_type,
-                "to_tile_type": to_tile_type,
-            },
-            {
-                "player_pos": self.player.grid_pos.copy(),
-                "stone_prev_pos": stone_prev_pos,
-                "stone_moved": stone_moved,
-                "weight": step_weight,
-                "from_tile_type": from_tile_type,
-                "to_tile_type": to_tile_type,
-            },
-        )
-
+    # History methods
     def reset_history(self):
         self.undo_history = []
         self.redo_history = []
@@ -449,6 +390,7 @@ class GameState(State):
         # Update game info
         self.game_info.increment_step(move["weight"])
 
+    # Simulation methods
     def reset_simulation(self):
         self.toggle_simulation(False)
 
@@ -485,68 +427,96 @@ class GameState(State):
         __move_queue = [_.lower() for _ in path if _.lower() in "udlr"]
 
         def movement_generator():
-            step_time = 0.0
+            step_timer = 0.0
             current_step = 0
+            base_delay = 0.5  # Base time between steps at 1x speed
 
             while current_step < len(__move_queue):
                 if not self.is_simulating:
                     yield False
 
-                speed_factor = self.controllers.state["speed"]
-                frame_delay = 0.2 / speed_factor
+                step_timer += self.game.dt
 
-                # Wait until step time has passed
-                while step_time < frame_delay:
-                    step_time += self.game.dt
+                speed_factor = max(0.1, self.controllers.state.get("speed", 1.0))
+                frame_delay = max(base_delay / speed_factor, 0.2)
+
+                if step_timer >= frame_delay:
+                    step_timer %= frame_delay
+
+                    direction = Direction.from_char(__move_queue[current_step])
+                    if direction:
+                        self.player.try_move(direction, on_move=self.on_player_move)
+                        current_step += 1
+
                     yield False
-
-                # Reset step timer and process move
-                step_time = 0.0
-                direction = Direction.from_char(__move_queue[current_step])
-                if direction:
-                    self.player.try_move(direction, on_move=self.on_player_move)
-                    current_step += 1
-
-                yield False
+                else:
+                    yield False
 
             self.is_simulating = False
             yield True
 
         self.current_simulation = movement_generator()
-=======
-        for button in self.buttons:
-            button.draw(screen)
 
-        self.player.draw(screen, self.camera)
+    # Event handlers
+    def win_handler(self, with_dialog):
+        self.game_info.stop_timer()
+        self.state_type = GameStateType.VICTORY
 
-        if self.debug_mode:
-            self.player.draw_debug(screen, self.camera)
+        if with_dialog:
+            self.dialogs["victory"].show()
+            self.dialogs["victory"].toggle_confetti(True)
 
-    def prev(self):
-        return self.prev_state
+    def zoom_minimap(self, delta: int):
+        zoom_level = max(
+            0.1, min(1.0, (int(self.minimap.zoom_level * 10) + delta) / 10)
+        )
 
-    def next(self):
-        return self.next_state
+        screen_size = get_screen_sz()
+        if delta < 0 or (delta > 0 and self.minimap.width * 2 < screen_size[0]):
+            self.minimap.zoom_level = zoom_level
 
-    def handle_event(self, event: pg.event.Event):
-        for button in self.buttons:
-            button.handle_event(event)
+        self.minimap.constrain_content()
 
-        if event.type == pg.KEYDOWN:
-            if event.key == pg.K_F1:
-                self.debug_mode = not self.debug_mode
+    def on_next_map(self):
+        self.load_map(from_index=self.current_map_index + 1)
 
-            if event.key == pg.K_ESCAPE:
-                self.next_state = self.prev()
+        self.state_type = GameStateType.PLAYING
 
-            if event.key in [pg.K_w, pg.K_UP]:
-                self.player.try_move("back")
-            if event.key in [pg.K_s, pg.K_DOWN]:
-                self.player.try_move("front")
-            if event.key in [pg.K_a, pg.K_LEFT]:
-                self.player.try_move("left")
-            if event.key in [pg.K_d, pg.K_RIGHT]:
-                self.player.try_move("right")
+        self.dialogs["victory"].toggle_confetti(False)
 
-        self.player.handle_event(event)
->>>>>>> 13d1998856ea5592dace2d4413bbda0213d6835d
+    def on_algo_select(self, algo: str):
+        self.simulate_algo = algo
+        self.update_simulate_algo(algo)
+
+        if self.map_sol and self.simulate_algo in self.map_sol:
+            self.toggle_simulation(True)
+
+    def on_player_move(
+        self,
+        step_weight: int = 0,
+        *,
+        stone_prev_pos: pg.Vector2 | None = None,
+        stone_moved: pg.Vector2 | None = None,
+        from_tile_type: pg.Surface | None = None,
+        to_tile_type: pg.Surface | None = None,
+    ):
+        self.game_info.increment_step(step_weight)
+
+        self.add_move_to_history(
+            {
+                "player_pos": self.player.grid_pos.copy(),
+                "stone_prev_pos": stone_prev_pos,
+                "stone_moved": stone_moved,
+                "weight": step_weight,
+                "from_tile_type": from_tile_type,
+                "to_tile_type": to_tile_type,
+            },
+            {
+                "player_pos": self.player.grid_pos.copy(),
+                "stone_prev_pos": stone_prev_pos,
+                "stone_moved": stone_moved,
+                "weight": step_weight,
+                "from_tile_type": from_tile_type,
+                "to_tile_type": to_tile_type,
+            },
+        )

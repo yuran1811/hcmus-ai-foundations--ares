@@ -1,6 +1,7 @@
 import pygame as pg
 
 from config import GRID_SIZE, MINIMAP_BG_COLOR, MINIMAP_PADDING
+from constants.enums import MinimapTileColor
 from utils import get_screen_sz
 
 
@@ -15,8 +16,8 @@ class MiniMap:
         self.dragging = False
         self.last_mouse_pos = pg.Vector2(0, 0)
         self.min_zoom = 0.1
-        self.max_zoom = 2.0
-        self.zoom_level = 0.25
+        self.max_zoom = 1.5
+        self.zoom_level = 0.2
         self.content_offset = pg.Vector2(0, 0)
         self.fixed_position = pg.Vector2(0, 0)
 
@@ -30,6 +31,9 @@ class MiniMap:
         )
 
         return self.fixed_position
+
+    def reset_zoom(self):
+        self.zoom_level = 0.2
 
     def is_in_minimap(self, pos: pg.Vector2) -> bool:
         return pg.Rect(
@@ -46,11 +50,11 @@ class MiniMap:
 
     def get_tile_color(self, tile_type: str, grid_pos: pg.Vector2) -> tuple:
         base_colors = {
-            "wall": (106, 106, 149, 255),
-            "floor": (30, 30, 46, 255),
-            "stone": (253, 199, 0, 255),
-            "switch": (80, 162, 255, 255),
-            "sos": (5, 223, 114, 255),
+            "wall": MinimapTileColor.get_color(MinimapTileColor.WALL),
+            "floor": MinimapTileColor.get_color(MinimapTileColor.FLOOR),
+            "stone": MinimapTileColor.get_color(MinimapTileColor.STONE),
+            "switch": MinimapTileColor.get_color(MinimapTileColor.SWITCH),
+            "sos": MinimapTileColor.get_color(MinimapTileColor.STONE_ON_SWITCH),
         }
 
         if tile_type == "switch":
@@ -58,15 +62,15 @@ class MiniMap:
             if (grid_pos.x, grid_pos.y) == (player_grid_pos.x, player_grid_pos.y):
                 return (*base_colors["switch"][:3], 128)
 
-        return base_colors.get(tile_type, (0, 0, 0, 255))
+        return base_colors.get(tile_type, (255, 255, 255, 255))
 
     def draw_map_content(self, screen: pg.Surface):
         tile_size = max(1, int(GRID_SIZE * self.zoom_level))
         map_row, map_col = self.game_state.map.size
 
         if not self.enable_zoom:
-            self.width = tile_size * map_col // GRID_SIZE
-            self.height = (tile_size + 0.5) * map_row // GRID_SIZE
+            self.width = (tile_size + 0.2) * map_col // GRID_SIZE
+            self.height = (tile_size + 0.4) * map_row // GRID_SIZE
 
         for y in range(
             int(self.content_offset.y // GRID_SIZE),
@@ -128,7 +132,10 @@ class MiniMap:
 
     def draw(self, screen: pg.Surface):
         self.bg_rect = pg.Rect(
-            self.position.x, self.position.y, self.width, self.height
+            self.position.x,
+            self.position.y,
+            self.width,
+            self.height,
         )
         pg.draw.rect(screen, MINIMAP_BG_COLOR, self.bg_rect, border_radius=5)
 
@@ -176,7 +183,7 @@ class MiniMap:
 
     def handle_zoom(self, zoom_in: bool):
         old_zoom = self.zoom_level
-        self.zoom_level *= 1.1 if zoom_in else 0.9
+        self.zoom_level += 0.2 if zoom_in else -0.2
         self.zoom_level = max(self.min_zoom, min(self.zoom_level, self.max_zoom))
 
         # Adjust content offset to keep center position

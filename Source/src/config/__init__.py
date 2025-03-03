@@ -28,3 +28,6 @@ BUTTON_HOVER = (117, 121, 148)
 
 MINIMAP_PADDING = 20
 MINIMAP_BG_COLOR = (30, 30, 46)
+
+# Others
+SUPPORTED_BGM_EXTENSIONS = {".mp3", ".wav", ".ogg", ".flac"}

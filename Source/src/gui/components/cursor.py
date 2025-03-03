@@ -1,14 +1,11 @@
 import pygame as pg
 
 from constants.paths import UI_PATH
-<<<<<<< HEAD
-from utils import get_frame_from_sprite
-=======
->>>>>>> 13d1998856ea5592dace2d4413bbda0213d6835d
+from utils.asset_loader import get_frame_from_sprite
 
 
 class Cursor:
-    def __init__(self, *, scale_factor: float = 1.0):
+    def __init__(self, *, scale_factor: int = 1):
         # Load sprite sheet
         self.sheet = pg.image.load(
             f"{UI_PATH}/cursors/micro-icon-pack/Sprite Sheet (10x10).png"
@@ -34,13 +31,7 @@ class Cursor:
             "click": {"start": 2, "end": 2},
             "drag": {"start": 3, "end": 3},
             "disabled": {"start": 5, "end": 5},
-<<<<<<< HEAD
             "input": {"start": 6, "end": 6},
-=======
-            "home": {"start": 19, "end": 19},
-            "unmute": {"start": 49, "end": 49},
-            "mute": {"start": 50, "end": 50},
->>>>>>> 13d1998856ea5592dace2d4413bbda0213d6835d
         }
 
         self.current_state = "normal"
@@ -48,32 +39,12 @@ class Cursor:
         self.animation_speed = 0.15
         self.rect = pg.Rect(0, 0, self.frame_size, self.frame_size)
 
-<<<<<<< HEAD
     def set_state(self, state_name: str):
         if state_name in self.states and state_name != self.current_state:
             self.current_state = state_name
             self.frame_index = self.states[state_name]["start"]
 
     def update(self, dt: float):
-=======
-    def get_frame(self, index: int):
-        """Get scaled frame by index"""
-
-        row = index // self.cols
-        col = index % self.cols
-        return self.sheet.subsurface(
-            (
-                col * self.frame_size,
-                row * self.frame_size,
-                self.frame_size,
-                self.frame_size,
-            )
-        )
-
-    def update(self, dt: float):
-        """Update cursor animation"""
-
->>>>>>> 13d1998856ea5592dace2d4413bbda0213d6835d
         state = self.states[self.current_state]
         self.frame_index += self.animation_speed * dt * 60
 
@@ -89,22 +60,8 @@ class Cursor:
         )
 
     def draw(self, surface: pg.Surface):
-<<<<<<< HEAD
         frame = get_frame_from_sprite(
             self.sheet, self.frame_index, self.frame_size, self.cols
         )
 
         surface.blit(frame, self.rect)
-=======
-        """Draw current cursor frame"""
-
-        frame = self.get_frame(int(self.frame_index))
-        surface.blit(frame, self.rect)
-
-    def set_state(self, state_name):
-        """Change cursor state and reset animation"""
-
-        if state_name in self.states and state_name != self.current_state:
-            self.current_state = state_name
-            self.frame_index = self.states[state_name]["start"]
->>>>>>> 13d1998856ea5592dace2d4413bbda0213d6835d

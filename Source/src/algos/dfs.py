@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from constants.enums import Direction
-from utils import profile
+from utils.metrics import profile
 
 from .search import Point, ProblemState, Search, StonesPos
 

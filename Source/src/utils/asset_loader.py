@@ -14,7 +14,7 @@ def load_spritesheet(
     file_path: str,
     *,
     frame_size: tuple[int, int],
-    scale_factor: float,
+    scale_factor: int,
     columns: int,
     direction_map: list[str],
 <<<<<<< HEAD
@@ -154,10 +154,10 @@ def load_character_animations():
 def get_frame_from_sprite(
     sheet: pg.Surface,
     index: int,
-    frame_size: float,
+    frame_size: int,
     num_cols: int,
     *,
-    scale_factor: float = 1.0,
+    scale_factor: int = 1,
 ):
     row = index // num_cols
     col = index % num_cols
@@ -237,6 +237,7 @@ def get_font(*, font_name: str = "pixelify", size: int = 24):
     paths = {
         "pixelify": "Pixelify_Sans/static/PixelifySans-Regular.ttf",
         "pixeloperator": "PixelOperator8/PixelOperator8.ttf",
+        "firacode": "FiraCode/FiraCode-Regular.ttf",
     }
 
     return pg.font.Font(

@@ -2,7 +2,6 @@
 import pygame as pg
 
 from config import BG_COLOR, GAME_TITLE
-from constants.paths import BGMS_PATH
 from gui.components import Button, Text
 from gui.handlers.cursor import cursor_handler
 from utils import get_screen_sz
@@ -97,12 +96,11 @@ class MenuState(State):
             button_y += 60
 
     def boot(self):
-        self.game.audio.load_sound("intro", f"{BGMS_PATH}/cave_theme_2.wav")
-        self.game.audio.play("intro", -1)
+        self.game.bgms_controller.play()
 
     def enter(self):
-        if self.game.audio.is_playing("intro"):
-            self.game.audio.play("intro", -1)
+        if self.game.bgms_controller.is_playing():
+            self.game.bgms_controller.play()
 
     def exit(self):
         pass
