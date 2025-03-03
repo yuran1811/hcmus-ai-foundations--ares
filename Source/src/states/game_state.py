@@ -159,6 +159,7 @@ class GameState(State):
             self.buttons["map_import"].rect,
         )
         self.game_info.set_position(screen_size[0] - 195, 10)
+        [_.responsive_handle() for _ in list(self.dialogs.values())]
 
     def boot(self):
         pass

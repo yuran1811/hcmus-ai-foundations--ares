@@ -81,6 +81,20 @@ class VictoryDialog(WithFont):
         self.next_button.clicked = False
         self.next_button.hovered = False
 
+    def responsive_handle(self):
+        screen_size = get_screen_sz()
+
+        self.rect.center = (screen_size[0] // 2, screen_size[1] // 2)
+
+        self.replay_button.set_position(
+            self.rect.centerx - 105, self.rect.centery + 40
+        ) if self.replay_button else None
+
+        self.next_button.set_position(
+            self.rect.centerx - (-25 if self.replay_button else 40),
+            self.rect.centery + 40,
+        ) if self.next_button else None
+
     def with_hide_action(self, _: Callable | None = None):
         def f():
             self.hide()
