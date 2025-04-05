@@ -19,16 +19,16 @@
 ## Screenshots
 
 <div style="display:flex;gap:12px;justify-content:center">
-	<img src="../../../../../../../d:/yuran/process/py/public/screenshots/home.png" style="width:45%;max-width:380px">
-	<img src="../../../../../../../d:/yuran/process/py/public/screenshots/game.png" style="width:45%;max-width:380px">
+	<img src="Source/public/screenshots/home.png" style="width:45%;max-width:380px">
+	<img src="Source/public/screenshots/game.png" style="width:45%;max-width:380px">
 </div>
 <div style="display:flex;gap:12px;justify-content:center">
-	<img src="../../../../../../../d:/yuran/process/py/public/screenshots/pick-algo.png" style="width:45%;max-width:380px">
-	<img src="../../../../../../../d:/yuran/process/py/public/screenshots/pick-map.png" style="width:45%;max-width:380px">
+	<img src="Source/public/screenshots/pick-algo.png" style="width:45%;max-width:380px">
+	<img src="Source/public/screenshots/pick-map.png" style="width:45%;max-width:380px">
 </div>
 <div style="display:flex;gap:12px;justify-content:center">
-	<img src="../../../../../../../d:/yuran/process/py/public/screenshots/setting.png" style="width:45%;max-width:380px">
-	<img src="../../../../../../../d:/yuran/process/py/public/screenshots/import-map.png" style="width:45%;max-width:380px">
+	<img src="Source/public/screenshots/setting.png" style="width:45%;max-width:380px">
+	<img src="Source/public/screenshots/import-map.png" style="width:45%;max-width:380px">
 </div>
 
 ## Quick Start
