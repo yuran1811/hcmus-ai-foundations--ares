@@ -2,6 +2,8 @@
 
 - [x] export `requirements.txt`
 - [x] map level indexing
+- [ ] add folder structure to report
+- [ ] rewrite readme
 
 ## Assessment
 
@@ -23,6 +25,7 @@
 - [x] deadlock detection (simple/count area/freeze/...) => freeze deadlock
 - [x] assignment problem => hungarian matching
 - [ ] restart searching to prevent stucking
+- [ ] ant colony recheck
 
 ## GUI
 
