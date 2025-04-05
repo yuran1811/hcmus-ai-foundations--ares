@@ -5,11 +5,11 @@
 </p>
 
 <p align="center">
-  <img alt="Stars" src="https://badgen.net/github/stars/yuran1811/hcmus-ai-foundations">
-  <img alt="Forks" src="https://badgen.net/github/forks/yuran1811/hcmus-ai-foundations">
-  <img alt="Issues" src="https://badgen.net/github/issues/yuran1811/hcmus-ai-foundations">
-  <img alt="Commits" src="https://badgen.net/github/commits/yuran1811/hcmus-ai-foundations">
-  <img alt="Code Size" src="https://img.shields.io/github/languages/code-size/yuran1811/hcmus-ai-foundations">
+  <img alt="Stars" src="https://badgen.net/github/stars/yuran1811/hcmus-ai-foundations--ares">
+  <img alt="Forks" src="https://badgen.net/github/forks/yuran1811/hcmus-ai-foundations--ares">
+  <img alt="Issues" src="https://badgen.net/github/issues/yuran1811/hcmus-ai-foundations--ares">
+  <img alt="Commits" src="https://badgen.net/github/commits/yuran1811/hcmus-ai-foundations--ares">
+  <img alt="Code Size" src="https://img.shields.io/github/languages/code-size/yuran1811/hcmus-ai-foundations--ares">
 </p>
 
 ## Tech Stack
